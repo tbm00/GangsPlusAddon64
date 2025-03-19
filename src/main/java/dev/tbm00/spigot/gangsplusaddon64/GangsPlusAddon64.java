@@ -49,6 +49,7 @@ public class GangsPlusAddon64 extends JavaPlugin {
                 
                 // Register Commands
                 getCommand("ggg").setExecutor(new GangGuiCmd(this, configHandler));
+                getCommand("ggga").setExecutor(new AdminGuiCmd(this, configHandler));
             }
         }
     }

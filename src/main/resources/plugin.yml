@@ -8,6 +8,8 @@ depend: [GangsPlus, Vault, Rep64]
 commands:
   ggg:
     description: Main command for GangsPlusAddon64
+  ggga:
+    description: Admin command for GangsPlusAddon64
 permissions:
   gangsplusaddon64.player:
     description: Ability to use player commands

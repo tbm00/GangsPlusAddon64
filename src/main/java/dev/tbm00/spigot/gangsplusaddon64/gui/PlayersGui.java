@@ -124,7 +124,7 @@ public class PlayersGui {
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(sender) && gang.isMember(sender)) {
             GuiUtils.setGuiItemHomes(gui, item, meta, lore, gang);
         } else {
-            gui.setItem(6, 3, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+            gui.setItem(6, 2, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         }
         
         // 3 - My Gang

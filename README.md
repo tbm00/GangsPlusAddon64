@@ -8,6 +8,7 @@ Created by tbm00 for play.mc64.wtf.
 - **Java 17+**: REQUIRED
 - **Spigot 1.18.1+**: UNTESTED ON OLDER VERSIONS
 - **GangsPlus**: REQUIRED
+- **PVPStats**: REQUIRED
 - **Vault**: REQUIRED
 - **Rep64**: REQUIRED
 
@@ -15,8 +16,10 @@ Created by tbm00 for play.mc64.wtf.
 ## Commands
 #### Player Commands 
 - ggg
-  - `/ggg` Open gang home page
+  - `/ggg` Open gang GUI
   - `/ggg <gang/player>` Open GUI by player/gang
+- ggga
+  - `/ggga` Open gang admin GUI
 
 
 ## Permissions

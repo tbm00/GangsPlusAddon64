@@ -45,6 +45,18 @@ public class GuiUtils {
     }
 
     /**
+     * Handles the event when sort gangs button is clicked.
+     * 
+     * @param event the inventory click event
+     * @param type integer for sort alg
+     */
+    public static void handleSortGangsAdminClick(InventoryClickEvent event, int type) {
+        event.setCancelled(true);
+        List<Gang> gangs = GangsPlusAddon64.gangHook.getGangManager().getAllGangs();
+        new AdminGui(javaPlugin, gangs, (Player) event.getWhoClicked(), type);
+    }
+
+    /**
      * Handles the event when sort players button is clicked.
      * 
      * @param event the inventory click event
@@ -93,6 +105,21 @@ public class GuiUtils {
         event.setCancelled(true);
         
         new PlayersGui(javaPlugin, gang, sender, 0);
+    }
+
+    /**
+     * Handles the event when a gang item in the GUI is clicked.
+     * 
+     * @param event the inventory click event
+     * @param sender the player who clicked the gang item
+     * @param gang the gang associated with the clicked item
+     */
+    public static void handleGangAdminClick(InventoryClickEvent event, Player sender, Gang gang) {
+        event.setCancelled(true);
+
+        if (event.isShiftClick()) {
+            Utils.sudoCommand(sender, "gadmin disband " + gang.getRawName());
+        } else new PlayersGui(javaPlugin, gang, sender, 0);
     }
 
     /**
@@ -162,6 +189,29 @@ public class GuiUtils {
         item.setItemMeta(meta);
         item.setType(Material.HOPPER);
         gui.setItem(6, 6, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortGangsClick(event, next)));
+        lore.clear();
+    }
+
+    /**
+     * Sets the gang GUI's footer's sort button format.
+     *
+     * @param gui the gui that will be sent to the player
+     * @param item holder for current item
+     * @param meta holder for current item's meta
+     * @param lore holder for current item's lore
+     * @param type integer of the sort alg
+     */
+    public static void setGuiItemSortGangsAdmin(PaginatedGui gui, ItemStack item, ItemMeta meta, List<String> lore, int type) {
+        int next = (type==7) ? 0 : type+1;
+
+        lore.add("&8-----------------------");
+        lore.add("&6Click to change sort order");
+        lore.add("&6("+ GANG_SORT_TYPES[type] + " -> " + GANG_SORT_TYPES[next] + ")");
+        meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dSort Gangs"));
+        item.setItemMeta(meta);
+        item.setType(Material.HOPPER);
+        gui.setItem(6, 6, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortGangsAdminClick(event, next)));
         lore.clear();
     }
 
@@ -317,6 +367,56 @@ public class GuiUtils {
         item.setAmount(1);
 
         gui.addItem(ItemBuilder.from(item).asGuiItem(event -> handleGangClick(event, sender, gang)));
+    }
+
+    /**
+     * Formats and adds an gang to the gang GUI.
+     *
+     * @param gui the paginated GUI to which the item will be added
+     * @param sender the player viewing the gang
+     * @param gang the gang associated with the item
+     * @param item the head to be displayed in the GUI
+     * @param meta the metadata of the item
+     * @param lore the list of lore descriptions to be displayed
+     * @param name the gang's name
+     * @param level the gang's current
+     * @param memberCount the gang's current
+     * @param ownerName the gang's current
+     * @param createdAt the gang's creation
+     * @param wins the gang's current
+     * @param loses the gang's current
+     * @param wlr the gang's current
+     * @param kill the gang's current
+     * @param deaths the gang's current
+     * @param kdr the gang's current
+     */
+    public static void addAdminGuiItemGang(PaginatedGui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int level, int memberCount, String ownerName, String createdAt, int wins, int loses, double wlr, int kills, int deaths, double kdr) {
+        meta.setLore(null);
+        lore.add("&8-----------------------");
+        lore.add("&f" + memberCount + " &7members, " + ownerName);
+        lore.add("&7Created " + createdAt);
+        lore.add("");
+        lore.add("&7Kills: &f" + kills + "&7, Deaths: &f" + deaths + "&7, Ratio: &f" + String.format("%.1f", kdr));
+        lore.add("&7Wins: &f" + wins + "&7, Loses: &f" + loses + "&7, Ratio: &f" + String.format("%.1f", wlr));
+        lore.add("&8-----------------------");
+        lore.add("&6Click to view gang members");
+        lore.add("&eShift-Click to disband the gang");
+
+        meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name + "&7- Lvl. " + level));
+        meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+        meta.addItemFlags(ItemFlag.HIDE_ARMOR_TRIM);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        meta.addItemFlags(ItemFlag.HIDE_DESTROYS);
+        meta.addItemFlags(ItemFlag.HIDE_DYE);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+
+        item.setItemMeta(meta);
+        item.setAmount(1);
+
+        gui.addItem(ItemBuilder.from(item).asGuiItem(event -> handleGangAdminClick(event, sender, gang)));
     }
 
     /**

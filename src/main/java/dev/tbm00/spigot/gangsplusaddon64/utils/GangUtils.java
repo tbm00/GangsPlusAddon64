@@ -38,6 +38,17 @@ public class GangUtils {
     }
 
     /**
+     * Handles the sub command for opening the gang gui with all gangs.
+     * 
+     * @param player the command sender
+     * @return true after creating gui instance
+     */
+    public static boolean handleAdminGuiCmd(Player player) {
+        new AdminGui(javaPlugin, GangsPlusAddon64.gangHook.getGangManager().getAllGangs(), player, 1);
+        return true;
+    }
+
+    /**
      * Handles the sub command for opening the gang gui player's gang.
      * 
      * @param player the command sender
