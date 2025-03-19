@@ -28,7 +28,7 @@ public class PlayersGui {
     public PlayersGui(GangsPlusAddon64 javaPlugin, Gang gang, Player sender) {
         this.javaPlugin = javaPlugin;
         this.gang = gang;
-        label = gang.getFormattedName()+" - ";
+        label = gang.getFormattedName()+"&8- ";
         gui = new PaginatedGui(6, 45, gang.getFormattedName());
         
         fillPlayers(sender);

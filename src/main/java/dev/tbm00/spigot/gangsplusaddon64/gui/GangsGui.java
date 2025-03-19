@@ -37,8 +37,6 @@ public class GangsGui {
         gui.updateTitle(label + gui.getCurrentPageNum() + "/" + gui.getPagesNum());
         gui.disableAllInteractions();
         gui.open(player);
-
-        
     }
 
     /**

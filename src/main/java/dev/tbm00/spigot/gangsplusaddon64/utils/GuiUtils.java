@@ -312,7 +312,7 @@ public class GuiUtils {
         lore.add("&8-----------------------");
         lore.add("&7Rank: &f" + rank);
         lore.add("&7Kills: &f" + kills + "&7, Deaths: &f" + deaths + "&7, Ratio: &f" + String.format("%.2f", kdr));
-        lore.add("&7Assists: "+assists);
+        lore.add("&7Assists: &f"+assists);
         lore.add("&8-----------------------");
         lore.add("&6Click to view gang members");
 
@@ -353,7 +353,7 @@ public class GuiUtils {
         meta.setLore(null);
         lore.add("&8-----------------------");
         lore.add("&7Kills: &f" + kills + "&7, Deaths: &f" + deaths + "&7, Ratio: &f" + String.format("%.2f", kdr));
-        lore.add("&7Assists: "+assists);
+        lore.add("&7Assists: &f"+assists);
         lore.add("&8-----------------------");
         lore.add("&6Click to invite to your gang");
 
