@@ -1,0 +1,17 @@
+name: GangsPlusAddon64
+version: ${project.version}
+description: ${project.description}
+author: tbm00
+main: dev.tbm00.spigot.gangsplusaddon64.GangsPlusAddon64
+api-version: 1.17
+depend: [GangsPlus, Vault, Rep64]
+commands:
+  ggg:
+    description: Main command for GangsPlusAddon64
+permissions:
+  gangsplusaddon64.player:
+    description: Ability to use player commands
+    default: true
+  gangsplusaddon64.admin:
+    description: Ability to use admin commands
+    default: op
