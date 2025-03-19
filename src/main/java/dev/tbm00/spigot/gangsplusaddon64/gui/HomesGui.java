@@ -2,19 +2,19 @@ package dev.tbm00.spigot.gangsplusaddon64.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.Location;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.PaginatedGui;
 
 import net.brcdev.gangs.gang.Gang;
-import net.brcdev.gangs.player.PlayerData;
 import dev.tbm00.spigot.gangsplusaddon64.GangsPlusAddon64;
 import dev.tbm00.spigot.gangsplusaddon64.utils.*;
 
@@ -30,7 +30,7 @@ public class HomesGui {
         label = "Gang Homes - ";
         gui = new PaginatedGui(6, 45, gang.getFormattedName());
         
-        fillPlayers(sender);
+        fillHomes(sender);
         setupFooter(sender);
         
         gui.updateTitle(label + gui.getCurrentPageNum() + "/" + gui.getPagesNum());
@@ -44,21 +44,30 @@ public class HomesGui {
      * @param sender the player for whom the GUI is being built
      */
     private void fillHomes(Player sender) {
-        for (Player target : javaPlugin.getServer().getOnlinePlayers()) {
-            ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-            SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+        Map<String, Location> homes = gang.getHomes();
+        int i = 1;
+        for (Map.Entry<String, Location> entry : homes.entrySet()) {
+            ItemStack item = new ItemStack(Material.GLASS);
+            ItemMeta meta = item.getItemMeta();
             List<String> lore = new ArrayList<>();
-            headMeta.setOwningPlayer(target);
 
-            String name = target.getName();
-            PlayerData data = GangsPlusAddon64.gangHook.getPlayerManager().getPlayerData(target);
-            
-            int kills = data.getKills();
-            int deaths = data.getDeaths();
-            double kdr = data.getKdRatio();
-            int assists = data.getAssists();
+            String name = entry.getKey();
+            Location location = entry.getValue();
 
-            GuiUtils.addGuiItemInvite(gui, sender, gang, head, headMeta, lore, name, assists, kills, deaths, kdr, target);
+            lore.add("&8-----------------------");
+            lore.add("&7"+location.getWorld().getName()+": &f"+(int)location.getX()+"&7, &f"
+                    +(int)location.getY()+"&7, &f"+(int)location.getZ());
+            lore.add("&8-----------------------");
+            lore.add("&6Click to TP to gang home: " + name);
+            meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&d"+name));
+            item.setItemMeta(meta);
+            item.setAmount(i);
+
+            gui.addItem(ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleHomeClick(event, gui, (Player) event.getWhoClicked(), name)));
+
+            lore.clear();
+            ++i;
         }
     }
 
@@ -70,33 +79,39 @@ public class HomesGui {
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
 
+        // 1 - empty
         gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
-        gui.setItem(6, 2, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
-        gui.setItem(6, 3, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
-
-        // Button: All Gangs
+        
+        // 2 - homes
         lore.add("&8-----------------------");
-        lore.add("&eClick to view all gangs");
+        lore.add("&eCurrently viewing your gang's home(s)");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dAll Gangs"));
         item.setItemMeta(meta);
-        item.setType(Material.BOOK);
-        gui.setItem(6, 4, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleAllClick(event, sender)));
+        item.setType(Material.COMPASS);
+        gui.setItem(6, 2, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleHomesClick(event, (Player) event.getWhoClicked(), gang)));
         lore.clear();
-
-        // Search
-        GuiUtils.setGuiItemSearch(gui, item, meta, lore);
-
-        // Button: My Gang
-        GuiUtils.setGuiItemMyGang(gui, item, meta, lore, sender);
         
+        // 3 - My Gang
+        GuiUtils.setGuiItemMyGang(gui, meta, sender);
+        
+        // 4 - empty
+        gui.setItem(6, 4, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+
+        // 5 - All Gangs
+        GuiUtils.setGuiItemAllGangs(gui, item, meta, lore);
+
+        // 6 - empty
+        gui.setItem(6, 6, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        
+        // 7 - empty
         gui.setItem(6, 7, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
 
-        // Previous Page
+        // 8 - previous
         if (gui.getPagesNum()>=2) GuiUtils.setGuiItemPageBack(gui, item, meta, lore, label);
         else gui.setItem(6, 8, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
 
-        // Next Page
+        // 9 - next
         if (gui.getPagesNum()>=2)  GuiUtils.setGuiItemPageNext(gui, item, meta, lore, label);
         else gui.setItem(6, 9, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
     }

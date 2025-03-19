@@ -109,6 +109,13 @@
             <systemPath>${project.basedir}/depend/GangsPlus-2_36_0.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>net.slipcor.pvpstats</groupId>
+            <artifactId>PVPStats</artifactId>
+            <version>1.11.60</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/depend/PVPStats-1_11_60.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>dev.tbm00</groupId>
             <artifactId>Rep64</artifactId>
             <version>1.2.2</version>

@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.brcdev.gangs.GangsPlugin;
 import net.milkbowl.vault.economy.Economy;
+import net.slipcor.pvpstats.PVPStats;
 
 import dev.tbm00.spigot.rep64.Rep64;
 
@@ -21,6 +22,7 @@ public class GangsPlusAddon64 extends JavaPlugin {
     public static GangsPlugin gangHook;
     public static Economy ecoHook;
     public static Rep64 repHook;
+    public static PVPStats pvpHook;
 
     @Override
     public void onEnable() {
@@ -63,6 +65,12 @@ public class GangsPlusAddon64 extends JavaPlugin {
             return;
         }
 
+        if (!setupPVPStats()) {
+            getLogger().severe("PVPStats hook failed -- disabling plugin!");
+            disablePlugin();
+            return;
+        }
+
         if (!setupVault()) {
             getLogger().severe("Vault hook failed -- disabling plugin!");
             disablePlugin();
@@ -90,6 +98,23 @@ public class GangsPlusAddon64 extends JavaPlugin {
         else return false;
 
         Utils.log(ChatColor.GREEN, "GangsPlus hooked.");
+        return true;
+    }
+
+    /**
+     * Attempts to hook into the GangsPlus plugin.
+     *
+     * @return true if the hook was successful, false otherwise.
+     */
+    private boolean setupPVPStats() {
+        if (!isPluginAvailable("GangsPlus")) return false;
+
+        Plugin pvpp = Bukkit.getPluginManager().getPlugin("PVPStats");
+        if (pvpp.isEnabled() && pvpp instanceof PVPStats)
+            pvpHook = (PVPStats) pvpp;
+        else return false;
+
+        Utils.log(ChatColor.GREEN, "PVPStats hooked.");
         return true;
     }
 

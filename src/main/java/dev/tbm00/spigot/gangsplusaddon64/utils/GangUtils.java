@@ -33,7 +33,7 @@ public class GangUtils {
      * @return true after creating gui instance
      */
     public static boolean handleMainGuiCmd(Player player) {
-        new GangsGui(javaPlugin, GangsPlusAddon64.gangHook.getGangManager().getAllGangs(), player);
+        new GangsGui(javaPlugin, GangsPlusAddon64.gangHook.getGangManager().getAllGangs(), player, 0);
         return true;
     }
 
@@ -44,7 +44,7 @@ public class GangUtils {
      * @return true after creating gui instance
      */
     public static boolean handleMyGuiCmd(Player player) {
-        new PlayersGui(javaPlugin, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player), player);
+        new PlayersGui(javaPlugin, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player), player, 0);
         return true;
     }
 
@@ -66,7 +66,7 @@ public class GangUtils {
             if (gang.getRawName().equalsIgnoreCase(args[0])
                 || gang.getName().equalsIgnoreCase(args[0])
                 || gang.getFormattedName().equalsIgnoreCase(args[0])) {
-                    new PlayersGui(javaPlugin, gang, sender);
+                    new PlayersGui(javaPlugin, gang, sender, 0);
                     return true;
                 }
         }
@@ -74,7 +74,7 @@ public class GangUtils {
             if (StringUtils.containsIgnoreCase(gang.getRawName(), args[0])
                 || StringUtils.containsIgnoreCase(gang.getName(), args[0])
                 || StringUtils.containsIgnoreCase(gang.getFormattedName(), args[0])) {
-                    new PlayersGui(javaPlugin, gang, sender);
+                    new PlayersGui(javaPlugin, gang, sender, 0);
                     return true;
                 }
         }
@@ -95,7 +95,7 @@ public class GangUtils {
         
         for (Gang gang : gangs) {
             if (gang.isMember(target)) {
-                new PlayersGui(javaPlugin, gang, sender);
+                new PlayersGui(javaPlugin, gang, sender, 0);
                 return true;
             }
         }

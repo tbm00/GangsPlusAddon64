@@ -11,6 +11,7 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.HumanEntity;
@@ -239,5 +240,29 @@ public class Utils {
         if (r.transactionSuccess()) {
             return true;
         } else return false;
+    }
+
+    /**
+     * Gets PVPStats
+     */
+    public static int getPvpStat(String stat, OfflinePlayer player) {
+        try {
+            return GangsPlusAddon64.pvpHook.getSQLHandler().getStats(stat, player.getUniqueId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * Gets PVPStats
+     */
+    public static int getPvpStat(String stat, Object player) {
+        try {
+            return GangsPlusAddon64.pvpHook.getSQLHandler().getStats(stat, ((Player) player).getUniqueId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 }

@@ -2,6 +2,7 @@ package dev.tbm00.spigot.gangsplusaddon64.gui;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -24,14 +25,19 @@ public class GangsGui {
     PaginatedGui gui;
     String label;
     Player player;
+    List<Gang> gangMap;
+    int currentSortIndex = 0;
     
-    public GangsGui(GangsPlusAddon64 javaPlugin, List<Gang> gangMap, Player player) {
+    public GangsGui(GangsPlusAddon64 javaPlugin, List<Gang> gangs, Player player, int sortIndex) {
         this.player = player;
         this.javaPlugin = javaPlugin;
+        this.gangMap = new ArrayList<>(gangs);
         label = "All Gangs - ";
         gui = new PaginatedGui(6, 45, "All Gangs");
+        currentSortIndex = sortIndex;
         
-        fillGangs(gangMap, player);
+        sortGangs();
+        fillGangs();
         setupFooter();
 
         gui.updateTitle(label + gui.getCurrentPageNum() + "/" + gui.getPagesNum());
@@ -40,13 +46,26 @@ public class GangsGui {
     }
 
     /**
+     * Sorts the internal map by the current index
+     */
+    private void sortGangs() {
+        gangMap.sort(Comparator.comparingLong(Gang::getCreatedAt));
+        gangMap.sort(Comparator.comparingInt(Gang::getKills).reversed());
+        if (currentSortIndex==0) gangMap.sort(Comparator.comparingInt(Gang::getAllMembersCount).reversed());
+        else if (currentSortIndex==1) gangMap.sort(Comparator.comparingLong(Gang::getCreatedAt));
+        else if (currentSortIndex==2) gangMap.sort(Comparator.comparingDouble(Gang::getKdRatio).reversed());
+        //else if (currentSortIndex==3) gangMap.sort(Comparator.comparingInt(Gang::getKills).reversed());
+        else if (currentSortIndex==4) gangMap.sort(Comparator.comparingInt(Gang::getDeaths).reversed());
+        else if (currentSortIndex==5) gangMap.sort(Comparator.comparingDouble(Gang::getWlRatio).reversed());
+        else if (currentSortIndex==6) gangMap.sort(Comparator.comparingInt(Gang::getFightsWon).reversed());
+        else if (currentSortIndex==7) gangMap.sort(Comparator.comparingInt(Gang::getFightsLost).reversed());
+    }
+
+    /**
      * Fills the GUI with items from the gang map.
      * Each gang that has a valid gang item and pricing information is converted into a clickable GUI item.
-     *
-     * @param gangMap a concurrent hash map of gang identifiers to Gang objects
-     * @param player the player for whom the GUI is being built
      */
-    private void fillGangs(List<Gang> gangMap, Player player) {
+    private void fillGangs() {
         for (Gang gang : gangMap) {
             /*check if valid & active gang*/ 
                 if (gang.getAllMembersCount()<=0) continue;
@@ -84,37 +103,42 @@ public class GangsGui {
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
 
+        // 1 - empty
         gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        
+        // 2 - empty
         gui.setItem(6, 2, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
-        gui.setItem(6, 3, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
 
-        // Button: All Gangs
+        // 3 - My Gang
+        if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player))
+            GuiUtils.setGuiItemMyGang(gui, meta, player);
+        else gui.setItem(6, 3, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+
+        // 4 - empty
+        gui.setItem(6, 4, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+
+        // 5 - All Gangs
         lore.add("&8-----------------------");
         lore.add("&eCurrently viewing all gangs");
+        lore.add("&e(sorted by " + GuiUtils.GANG_SORT_TYPES[currentSortIndex]+")");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dAll Gangs"));
         item.setItemMeta(meta);
-        item.setType(Material.CHEST);
-        gui.setItem(6, 4, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
+        item.setType(Material.BOOK);
+        gui.setItem(6, 5, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
         lore.clear();
 
-        // Search
-        GuiUtils.setGuiItemSearch(gui, item, meta, lore);
+        // 6 - Sort
+        GuiUtils.setGuiItemSortGangs(gui, item, meta, lore, currentSortIndex);
 
-        // Button: My Gang / My Invites
-        if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player)) {
-            GuiUtils.setGuiItemMyGang(gui, item, meta, lore, player);
-        } else {
-            GuiUtils.setGuiItemMyInvites(gui, item, meta, lore, player);
-        }
-
+        // 7 - empty
         gui.setItem(6, 7, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
 
-        // Previous Page
+        // 8 - previous
         if (gui.getPagesNum()>=2) GuiUtils.setGuiItemPageBack(gui, item, meta, lore, label);
         else gui.setItem(6, 8, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
 
-        // Next Page
+        // 9 - next
         if (gui.getPagesNum()>=2)  GuiUtils.setGuiItemPageNext(gui, item, meta, lore, label);
         else gui.setItem(6, 9, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
     }
