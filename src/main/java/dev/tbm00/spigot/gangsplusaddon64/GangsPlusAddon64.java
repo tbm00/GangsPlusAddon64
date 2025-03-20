@@ -4,11 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.brcdev.gangs.GangsPlugin;
-import net.milkbowl.vault.economy.Economy;
+import net.skinsrestorer.api.SkinsRestorer;
+import net.skinsrestorer.api.SkinsRestorerProvider;
 import net.slipcor.pvpstats.PVPStats;
 
 import dev.tbm00.spigot.rep64.Rep64;
@@ -20,9 +20,9 @@ import dev.tbm00.spigot.gangsplusaddon64.listener.PlayerMovement;
 public class GangsPlusAddon64 extends JavaPlugin {
     private ConfigHandler configHandler;
     public static GangsPlugin gangHook;
-    public static Economy ecoHook;
     public static Rep64 repHook;
     public static PVPStats pvpHook;
+    public static SkinsRestorer skinHook;
 
     @Override
     public void onEnable() {
@@ -72,14 +72,14 @@ public class GangsPlusAddon64 extends JavaPlugin {
             return;
         }
 
-        if (!setupVault()) {
-            getLogger().severe("Vault hook failed -- disabling plugin!");
+        if (!setupRep64()) {
+            getLogger().severe("Rep64 hook failed -- disabling plugin!");
             disablePlugin();
             return;
         }
 
-        if (!setupRep64()) {
-            getLogger().severe("Rep64 hook failed -- disabling plugin!");
+        if (!setupSkinsRestorer()) {
+            getLogger().severe("SkinsRestorer hook failed -- disabling plugin!");
             disablePlugin();
             return;
         }
@@ -120,23 +120,6 @@ public class GangsPlusAddon64 extends JavaPlugin {
     }
 
     /**
-     * Attempts to hook into the Vault plugin.
-     *
-     * @return true if the hook was successful, false otherwise.
-     */
-    private boolean setupVault() {
-        if (!isPluginAvailable("Vault")) return false;
-
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) return false;
-        ecoHook = rsp.getProvider();
-        if (ecoHook == null) return false;
-
-        Utils.log(ChatColor.GREEN, "Vault hooked.");
-        return true;
-    }
-
-    /**
      * Attempts to hook into the Rep64 plugin.
      *
      * @return true if the hook was successful, false otherwise.
@@ -150,6 +133,20 @@ public class GangsPlusAddon64 extends JavaPlugin {
         else return false;
 
         Utils.log(ChatColor.GREEN, "Rep64 hooked.");
+        return true;
+    }
+
+    /**
+     * Attempts to hook into the kinsRestorer plugin.
+     *
+     * @return true if the hook was successful, false otherwise.
+     */
+    private boolean setupSkinsRestorer() {
+        if (!isPluginAvailable("SkinsRestorer")) return false;
+
+        skinHook = SkinsRestorerProvider.get();
+
+        Utils.log(ChatColor.GREEN, "SkinsRestorer hooked.");
         return true;
     }
 

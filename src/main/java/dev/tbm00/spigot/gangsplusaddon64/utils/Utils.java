@@ -1,9 +1,16 @@
 package dev.tbm00.spigot.gangsplusaddon64.utils;
 
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.lang.reflect.Field;
+
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,10 +24,9 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import net.md_5.bungee.api.chat.TextComponent;
-
-import net.milkbowl.vault.economy.EconomyResponse;
 
 import dev.tbm00.spigot.gangsplusaddon64.GangsPlusAddon64;
 import dev.tbm00.spigot.gangsplusaddon64.ConfigHandler;
@@ -29,6 +35,7 @@ public class Utils {
     private static GangsPlusAddon64 javaPlugin;
     private static ConfigHandler configHandler;
     public static final List<String> pendingTeleports = new CopyOnWriteArrayList<>();
+    
 
     public static void init(GangsPlusAddon64 javaPlugin, ConfigHandler configHandler) {
         Utils.javaPlugin = javaPlugin;
@@ -215,34 +222,6 @@ public class Utils {
     }
 
     /**
-     * Attempts to remove a specified amount of money from the player's account.
-     *
-     * @param player the player from whose account the money will be withdrawn
-     * @param amount the amount of money to remove from the account
-     * @return true if the withdrawal transaction was successful, false otherwise
-     */
-    public static boolean removeMoney(Player player, double amount) {
-        EconomyResponse r = GangsPlusAddon64.ecoHook.withdrawPlayer(player, amount);
-        if (r.transactionSuccess()) {
-            return true;
-        } else return false;
-    }
-
-    /**
-     * Attempts to add a specified amount of money to the player's account.
-     *
-     * @param player the player whose account will receive the deposit
-     * @param amount the amount of money to add to the account
-     * @return true if the deposit transaction was successful, false otherwise
-     */
-    public static boolean addMoney(Player player, double amount) {
-        EconomyResponse r = GangsPlusAddon64.ecoHook.depositPlayer(player, amount);
-        if (r.transactionSuccess()) {
-            return true;
-        } else return false;
-    }
-
-    /**
      * Gets PVPStats
      */
     public static int getPvpStat(String stat, OfflinePlayer player) {
@@ -264,5 +243,74 @@ public class Utils {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    private static final Map<UUID, String> headTextureCache = new HashMap<>();
+
+    /**
+     * Adds skin texture to head meta.
+     * 
+     * If player+skin is in cached map, retrieve it
+     * else use setOwningPlayer and save the SkullMeta to cache
+     *
+     * @param headMeta the head meta to modify
+     * @param player the player whose head we want
+     */
+    public static void applyHeadTexture(SkullMeta headMeta, OfflinePlayer player) {
+        UUID uuid = player.getUniqueId();
+        if (headTextureCache.containsKey(uuid)) {
+            setHeadTexture(headMeta, headTextureCache.get(uuid));
+        } else {
+            // Not cached – use Mojang's API to load skin (this will trigger a network request)
+            if (player.isOnline() && player instanceof Player)
+                headMeta.setOwningPlayer((Player) player);
+            else headMeta.setOwningPlayer(player);
+
+            // Extract the texture from the modified headMeta and cache it
+            String texture = extractHeadTexture(headMeta);
+            if (texture != null) {
+                headTextureCache.put(uuid, texture);
+            }
+        }
+    }
+
+    /**
+     * Applies a texture string to the head meta using reflection.
+     *
+     * @param headMeta the SkullMeta to modify
+     * @param texture  the base64 encoded texture string
+     */
+    private static void setHeadTexture(SkullMeta headMeta, String texture) {
+        try {
+            GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+            profile.getProperties().put("textures", new Property("textures", texture));
+
+            Field profileField = headMeta.getClass().getDeclaredField("profile");
+            profileField.setAccessible(true);
+            profileField.set(headMeta, profile);
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
+    }
+
+    /**
+     * Extracts the base64 texture string from the SkullMeta.
+     *
+     * @param headMeta the SkullMeta from which to extract the texture
+     * @return the texture string if found, otherwise null
+     */
+    private static String extractHeadTexture(SkullMeta headMeta) {
+        try {
+            Field profileField = headMeta.getClass().getDeclaredField("profile");
+            profileField.setAccessible(true);
+            
+            GameProfile profile = (GameProfile) profileField.get(headMeta);
+            if (profile != null && profile.getProperties().containsKey("textures")) {
+                return profile.getProperties().get("textures").iterator().next().getValue();
+            }
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
+        return null;
     }
 }

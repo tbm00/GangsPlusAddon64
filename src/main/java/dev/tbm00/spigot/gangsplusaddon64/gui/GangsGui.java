@@ -76,7 +76,7 @@ public class GangsGui {
                 ItemStack head = new ItemStack(Material.PLAYER_HEAD);
                 SkullMeta headMeta = (SkullMeta) head.getItemMeta();
                 List<String> lore = new ArrayList<>();
-                headMeta.setOwningPlayer(gang.getOwner());
+                Utils.applyHeadTexture(headMeta, gang.getOwner());
                 
                 String name = (gang.getFormattedName()!=null) ? gang.getFormattedName() : gang.getRawName();
                 int level = gang.getLevel();

@@ -429,7 +429,7 @@ public class GuiUtils {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();
         List<String> lore = new ArrayList<>();
-        headMeta.setOwningPlayer(player);
+        Utils.applyHeadTexture(headMeta, player);
         lore.add("&8-----------------------");
         lore.add("&6Click to view your gang's members");
         headMeta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
@@ -441,7 +441,7 @@ public class GuiUtils {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();
         List<String> lore = new ArrayList<>();
-        headMeta.setOwningPlayer(player);
+        Utils.applyHeadTexture(headMeta, player);
         lore.add("&8-----------------------");
         lore.add("&6Click to view your gang's members");
         headMeta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());

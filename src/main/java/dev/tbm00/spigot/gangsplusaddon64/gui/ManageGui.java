@@ -152,7 +152,7 @@ public class ManageGui {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();
         List<String> lore = new ArrayList<>();
-        headMeta.setOwningPlayer(givenGang.getOwner());
+        Utils.applyHeadTexture(headMeta, givenGang.getOwner());
         
         String name = (givenGang.getFormattedName()!=null) ? givenGang.getFormattedName() : givenGang.getRawName();
         int level = givenGang.getLevel();

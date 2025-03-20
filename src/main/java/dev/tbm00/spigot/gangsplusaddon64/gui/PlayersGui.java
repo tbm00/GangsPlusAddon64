@@ -82,7 +82,7 @@ public class PlayersGui {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta headMeta = (SkullMeta) head.getItemMeta();
             List<String> lore = new ArrayList<>();
-            headMeta.setOwningPlayer(player);
+            Utils.applyHeadTexture(headMeta, player);
 
             String name = player.getName();
             int rank = gang.getMemberData(player).getRank();
@@ -139,7 +139,7 @@ public class PlayersGui {
                 ItemStack head = new ItemStack(Material.PLAYER_HEAD);
                 SkullMeta headMeta = (SkullMeta) head.getItemMeta();
                 List<String> headLore = new ArrayList<>();
-                headMeta.setOwningPlayer(sender);
+                Utils.applyHeadTexture(headMeta, sender);
                 headLore.add("&8-----------------------");
                 headLore.add("&eCurrently viewing your gang's members");
                 headLore.add("&e(sorted by " + GuiUtils.PLAYER_SORT_TYPES[currentSortIndex]+")");
