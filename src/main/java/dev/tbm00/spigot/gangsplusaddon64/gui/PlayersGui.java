@@ -45,6 +45,8 @@ public class PlayersGui {
         
         gui.updateTitle(label + gui.getCurrentPageNum() + "/" + gui.getPagesNum());
         gui.disableAllInteractions();
+        GuiUtils.disableAll(gui);
+
         gui.open(sender);
     }
     
@@ -76,7 +78,7 @@ public class PlayersGui {
      * @param sender the player for whom the GUI is being built
      */
     private void fillPlayers(Player sender) {
-        for (OfflinePlayer player : gang.getAllMembers()) {
+        for (OfflinePlayer player : playerMap) {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta headMeta = (SkullMeta) head.getItemMeta();
             List<String> lore = new ArrayList<>();
@@ -105,7 +107,7 @@ public class PlayersGui {
                 e.printStackTrace();
             }
 
-            GuiUtils.addGuiItemPlayer(gui, sender, gang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_kills, p_deaths, p_kdr);
+            GuiUtils.addGuiItemPlayer(gui, sender, gang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_kills, p_deaths, p_kdr, currentSortIndex);
         }
     }
 
@@ -117,17 +119,21 @@ public class PlayersGui {
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
 
-        // 1 - empty
-        gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        // 1 - (my) Gang Management
+        if (GangsPlusAddon64.gangHook.getGangManager().isInGang(sender)) {
+            GuiUtils.setGuiItemManage(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(sender));
+        } else {
+            gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        }
         
-        // 2 - Gang Homes
-        if (GangsPlusAddon64.gangHook.getGangManager().isInGang(sender) && gang.isMember(sender)) {
-            GuiUtils.setGuiItemHomes(gui, item, meta, lore, gang);
+        // 2 - (my) Gang Homes
+        if (GangsPlusAddon64.gangHook.getGangManager().isInGang(sender)) {
+            GuiUtils.setGuiItemHomes(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(sender));
         } else {
             gui.setItem(6, 2, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         }
         
-        // 3 - My Gang
+        // 3 - (my) Gang Members
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(sender)) {
             if (gang.isMember(sender)) {
                 ItemStack head = new ItemStack(Material.PLAYER_HEAD);
@@ -135,10 +141,10 @@ public class PlayersGui {
                 List<String> headLore = new ArrayList<>();
                 headMeta.setOwningPlayer(sender);
                 headLore.add("&8-----------------------");
-                headLore.add("&eCurrently viewing your gang");
+                headLore.add("&eCurrently viewing your gang's members");
                 headLore.add("&e(sorted by " + GuiUtils.PLAYER_SORT_TYPES[currentSortIndex]+")");
                 headMeta.setLore(headLore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
-                headMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dYour Gang"));
+                headMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dGang Members"));
                 head.setItemMeta(headMeta);
                 gui.setItem(6, 3, ItemBuilder.from(head).asGuiItem(event -> {event.setCancelled(true);}));
                 headLore.clear();
@@ -153,7 +159,7 @@ public class PlayersGui {
         // 5 - All Gangs
         GuiUtils.setGuiItemAllGangs(gui, item, meta, lore);
 
-        // 6 - Sort Players
+        // 6 - Sort
         GuiUtils.setGuiItemSortPlayers(gui, item, meta, lore, currentSortIndex, gang);
 
         // 7 - empty

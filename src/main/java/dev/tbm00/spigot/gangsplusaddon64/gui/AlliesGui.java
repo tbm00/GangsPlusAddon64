@@ -20,22 +20,31 @@ import net.brcdev.gangs.gang.Gang;
 import dev.tbm00.spigot.gangsplusaddon64.GangsPlusAddon64;
 import dev.tbm00.spigot.gangsplusaddon64.utils.*;
 
-public class GangsGui {
+public class AlliesGui {
     GangsPlusAddon64 javaPlugin;
     PaginatedGui gui;
     String label;
-    Player player;
+    Player sender;
     List<Gang> gangMap;
+    Gang givenGang;
     int currentSortIndex = 0;
     
-    public GangsGui(GangsPlusAddon64 javaPlugin, List<Gang> gangs, Player player, int sortIndex) {
-        this.player = player;
+    public AlliesGui(GangsPlusAddon64 javaPlugin, List<Gang> gangs, Player player, int sortIndex) {
+        this.sender = player;
         this.javaPlugin = javaPlugin;
         this.gangMap = new ArrayList<>(gangs);
-        label = "All Gangs - ";
-        gui = new PaginatedGui(6, 45, "All Gangs");
+        label = "Allied Gangs - ";
+        gui = new PaginatedGui(6, 45, "Allied Gangs");
         currentSortIndex = sortIndex;
-        
+
+        try {
+            givenGang = GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player);
+        } catch (Exception e) {
+            Utils.log(ChatColor.RED, "Caught exception getting gang for player " + player.getName());
+            e.printStackTrace();
+            return;
+        }
+
         sortGangs();
         fillGangs();
         setupFooter();
@@ -68,9 +77,10 @@ public class GangsGui {
      * Each gang that has a valid gang item is converted into a clickable GUI item.
      */
     private void fillGangs() {
+
         for (Gang gang : gangMap) {
-            /*check if valid & active gang*/ 
-                if (gang.getAllMembersCount()<=0) continue;
+            /*check if valid & active gang*/
+                if (!gang.isAlly(givenGang)) continue;
 
             /*define item button's lore, name, flags, etc*/
                 ItemStack head = new ItemStack(Material.PLAYER_HEAD);
@@ -93,7 +103,7 @@ public class GangsGui {
                 int deaths = gang.getDeaths();
                 double kdr = gang.getKdRatio();
                 
-                GuiUtils.addGuiItemGang(gui, player, gang, head, headMeta, lore, name, level, memberCount, ownerName, createdAt, wins, loses, wlr, kills, deaths, kdr);
+                GuiUtils.addGuiItemGangAlly(gui, sender, gang, givenGang, head, headMeta, lore, name, level, memberCount, ownerName, createdAt, wins, loses, wlr, kills, deaths, kdr);
         }
     }
 
@@ -105,51 +115,38 @@ public class GangsGui {
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
 
-        // 1 - (my) Gang Management
-        if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player)) {
-            GuiUtils.setGuiItemManage(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player));
-        } else {
-            gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
-        }
-        
-        // 2 - (my) Gang Homes
-        if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player)) {
-            GuiUtils.setGuiItemHomes(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player));
-        } else {
-            gui.setItem(6, 2, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
-        }
-
-        // 3 - (my) Gang Members
-        if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player))
-            GuiUtils.setGuiItemMyGang(gui, meta, player);
-        else gui.setItem(6, 3, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
-
-        // 4 - empty
+        gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        gui.setItem(6, 2, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        gui.setItem(6, 3, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         gui.setItem(6, 4, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
-
-        // 5 - All Gangs
+        
+        // 4 - Back button
         lore.add("&8-----------------------");
-        lore.add("&eCurrently viewing all gangs");
-        lore.add("&e(sorted by " + GuiUtils.GANG_SORT_TYPES[currentSortIndex]+")");
+        lore.add("&6Click to go back");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dAll Gangs"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fBack"));
         item.setItemMeta(meta);
-        item.setType(Material.BOOK);
-        gui.setItem(6, 5, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
+        item.setType(Material.STONE_BUTTON);
+        gui.setItem(6, 4, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleManageMenuClick(event, givenGang)));
+        lore.clear();
+
+        gui.setItem(6, 5, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        
+        // 5 - Add ally button
+        lore.add("&8-----------------------");
+        lore.add("&6Click to send an ally request to a gang");
+        meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dAdd Ally"));
+        item.setItemMeta(meta);
+        item.setType(Material.POPPY);
+        gui.setItem(6, 5, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleAllyAddClick(event, givenGang)));
         lore.clear();
 
         // 6 - Sort
-        GuiUtils.setGuiItemSortGangs(gui, item, meta, lore, currentSortIndex);
-
-        // 7 - empty
+        GuiUtils.setGuiItemSortAllies(gui, item, meta, lore, currentSortIndex, givenGang);
+        
         gui.setItem(6, 7, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
-
-        // 8 - previous
-        if (gui.getPagesNum()>=2) GuiUtils.setGuiItemPageBack(gui, item, meta, lore, label);
-        else gui.setItem(6, 8, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
-
-        // 9 - next
-        if (gui.getPagesNum()>=2)  GuiUtils.setGuiItemPageNext(gui, item, meta, lore, label);
-        else gui.setItem(6, 9, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        gui.setItem(6, 8, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        gui.setItem(6, 9, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
     }
 }

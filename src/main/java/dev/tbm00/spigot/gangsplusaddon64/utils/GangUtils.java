@@ -2,7 +2,6 @@ package dev.tbm00.spigot.gangsplusaddon64.utils;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.OfflinePlayer;
@@ -16,14 +15,9 @@ import dev.tbm00.spigot.gangsplusaddon64.gui.*;
 
 public class GangUtils {
     private static GangsPlusAddon64 javaPlugin;
-    //private static ConfigHandler configHandler;
-    public static final List<String> pendingTeleports = new CopyOnWriteArrayList<>();
-    public static String clipboardWorld = null;
-    public static int x1=0, y1=0, z1=0, x2=0, y2=0, z2=0, xc=0, yc=0, zc=0;
 
     public static void init(GangsPlusAddon64 javaPlugin, ConfigHandler configHandler) {
         GangUtils.javaPlugin = javaPlugin;
-        //GangUtils.configHandler = configHandler;
     }
 
     /**
@@ -67,12 +61,27 @@ public class GangUtils {
      * @return true if task was processed successfully
      */
     public static boolean handleSearch(Player sender, String[] args) {
-        List<Gang> gangs = GangsPlusAddon64.gangHook.getGangManager().getAllGangs();
-
         while (args[0].startsWith(" ")) {
             args[0] = args[0].substring(1);
         }
 
+        List<Gang> gangs = GangsPlusAddon64.gangHook.getGangManager().getAllGangs();
+        String targetUUID = GangsPlusAddon64.repHook.getRepManager().getPlayerUUID(args[0]);
+        OfflinePlayer target;
+
+        try {
+            target = javaPlugin.getServer().getOfflinePlayer(UUID.fromString(targetUUID));
+            for (Gang gang : gangs) {
+                if (gang.isMember(target)) {
+                    new PlayersGui(javaPlugin, gang, sender, 0);
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        
         for (Gang gang : gangs) {
             if (gang.getRawName().equalsIgnoreCase(args[0])
                 || gang.getName().equalsIgnoreCase(args[0])
@@ -89,28 +98,6 @@ public class GangUtils {
                     return true;
                 }
         }
-                
-        String targetUUID = GangsPlusAddon64.repHook.getRepManager().getPlayerUUID(args[0]);
-        if (targetUUID==null) {
-            return false;
-        }
-
-        OfflinePlayer target;
-        try {
-            target = javaPlugin.getServer().getOfflinePlayer(UUID.fromString(targetUUID));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } if (target==null) return false;
-        
-        
-        for (Gang gang : gangs) {
-            if (gang.isMember(target)) {
-                new PlayersGui(javaPlugin, gang, sender, 0);
-                return true;
-            }
-        }
-
         return false;
     }
 

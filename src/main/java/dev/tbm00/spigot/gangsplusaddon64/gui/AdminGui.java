@@ -42,6 +42,8 @@ public class AdminGui {
 
         gui.updateTitle(label + gui.getCurrentPageNum() + "/" + gui.getPagesNum());
         gui.disableAllInteractions();
+        GuiUtils.disableAll(gui);
+
         gui.open(player);
     }
 
@@ -91,7 +93,7 @@ public class AdminGui {
                 int deaths = gang.getDeaths();
                 double kdr = gang.getKdRatio();
                 
-                GuiUtils.addAdminGuiItemGang(gui, player, gang, head, headMeta, lore, name, level, memberCount, ownerName, createdAt, wins, loses, wlr, kills, deaths, kdr);
+                GuiUtils.addGuiItemGangAdmin(gui, player, gang, head, headMeta, lore, name, level, memberCount, ownerName, createdAt, wins, loses, wlr, kills, deaths, kdr);
         }
     }
 
@@ -103,11 +105,19 @@ public class AdminGui {
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
 
-        // 1 - empty
-        gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        // 1 - (my) Gang Management
+        if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player)) {
+            GuiUtils.setGuiItemManage(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player));
+        } else {
+            gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        }
         
-        // 2 - empty
-        gui.setItem(6, 2, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        // 2 - (my) Gang Homes
+        if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player)) {
+            GuiUtils.setGuiItemHomes(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player));
+        } else {
+            gui.setItem(6, 2, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        }
 
         // 3 - My Gang
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player))

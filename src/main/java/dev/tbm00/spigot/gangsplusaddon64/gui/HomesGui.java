@@ -35,6 +35,8 @@ public class HomesGui {
         
         gui.updateTitle(label + gui.getCurrentPageNum() + "/" + gui.getPagesNum());
         gui.disableAllInteractions();
+        GuiUtils.disableAll(gui);
+        
         gui.open(sender);
     }
 
@@ -79,8 +81,12 @@ public class HomesGui {
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
 
-        // 1 - empty
-        gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        // 1 - (my) Gang Management
+        if (GangsPlusAddon64.gangHook.getGangManager().isInGang(sender) && gang.isMember(sender)) {
+            GuiUtils.setGuiItemManage(gui, item, meta, lore, gang);
+        } else {
+            gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        }
         
         // 2 - homes
         lore.add("&8-----------------------");
