@@ -80,9 +80,9 @@ public class PlayersGui {
     private void fillPlayers(Player sender) {
         for (OfflinePlayer player : playerMap) {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+            Utils.applyHeadTexture(head, player);
             SkullMeta headMeta = (SkullMeta) head.getItemMeta();
             List<String> lore = new ArrayList<>();
-            Utils.applyHeadTexture(headMeta, player);
 
             String name = player.getName();
             int rank = gang.getMemberData(player).getRank();
@@ -137,9 +137,9 @@ public class PlayersGui {
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(sender)) {
             if (gang.isMember(sender)) {
                 ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+                Utils.applyHeadTexture(head, sender);
                 SkullMeta headMeta = (SkullMeta) head.getItemMeta();
                 List<String> headLore = new ArrayList<>();
-                Utils.applyHeadTexture(headMeta, sender);
                 headLore.add("&8-----------------------");
                 headLore.add("&eCurrently viewing your gang's members");
                 headLore.add("&e(sorted by " + GuiUtils.PLAYER_SORT_TYPES[currentSortIndex]+")");

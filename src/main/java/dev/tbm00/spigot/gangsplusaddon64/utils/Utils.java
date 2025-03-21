@@ -245,7 +245,7 @@ public class Utils {
         }
     }
 
-    private static final Map<UUID, String> headTextureCache = new HashMap<>();
+    private static final Map<UUID, SkullMeta> headMetaCache = new HashMap<>();
 
     /**
      * Adds skin texture to head meta.
@@ -256,61 +256,37 @@ public class Utils {
      * @param headMeta the head meta to modify
      * @param player the player whose head we want
      */
-    public static void applyHeadTexture(SkullMeta headMeta, OfflinePlayer player) {
+    public static void applyHeadTexture(ItemStack head, OfflinePlayer player) {
+        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
         UUID uuid = player.getUniqueId();
-        if (headTextureCache.containsKey(uuid)) {
-            setHeadTexture(headMeta, headTextureCache.get(uuid));
+        if (headMetaCache.containsKey(uuid)) {
+            // Use a clone of the cached SkullMeta
+            head.setItemMeta(headMetaCache.get(uuid).clone());
         } else {
-            // Not cached – use Mojang's API to load skin (this will trigger a network request)
-            if (player.isOnline() && player instanceof Player)
+            // Set the owning player to trigger skin loading
+            if (player.isOnline() && player instanceof Player) {
                 headMeta.setOwningPlayer((Player) player);
-            else headMeta.setOwningPlayer(player);
-
-            // Extract the texture from the modified headMeta and cache it
-            String texture = extractHeadTexture(headMeta);
-            if (texture != null) {
-                headTextureCache.put(uuid, texture);
+            } else {
+                headMeta.setOwningPlayer(player);
             }
+            head.setItemMeta(headMeta);
+    
+            // Delay to allow the server to apply the skin texture
+            Bukkit.getScheduler().runTaskLater(javaPlugin, () -> {
+                // Retrieve the updated SkullMeta from the ItemStack
+                SkullMeta updatedMeta = (SkullMeta) head.getItemMeta();
+                if (updatedMeta==null || !updatedMeta.getOwningPlayer().hasPlayedBefore()) {
+                    ItemStack blankHead = new ItemStack(Material.PLAYER_HEAD);
+                    SkullMeta blankMeta = (SkullMeta) blankHead.getItemMeta();
+                    
+                    blankMeta.setOwningPlayer(null);
+                    headMetaCache.put(uuid, blankMeta);
+                    log(ChatColor.YELLOW, "cached BLANK SkullMeta for " + uuid);
+                } else {
+                    headMetaCache.put(uuid, updatedMeta);
+                    log(ChatColor.GREEN, "cached SkullMeta for " + uuid);
+                }
+            }, 20L);
         }
-    }
-
-    /**
-     * Applies a texture string to the head meta using reflection.
-     *
-     * @param headMeta the SkullMeta to modify
-     * @param texture  the base64 encoded texture string
-     */
-    private static void setHeadTexture(SkullMeta headMeta, String texture) {
-        try {
-            GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-            profile.getProperties().put("textures", new Property("textures", texture));
-
-            Field profileField = headMeta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            profileField.set(headMeta, profile);
-        } catch (Exception e) {
-            //e.printStackTrace();
-        }
-    }
-
-    /**
-     * Extracts the base64 texture string from the SkullMeta.
-     *
-     * @param headMeta the SkullMeta from which to extract the texture
-     * @return the texture string if found, otherwise null
-     */
-    private static String extractHeadTexture(SkullMeta headMeta) {
-        try {
-            Field profileField = headMeta.getClass().getDeclaredField("profile");
-            profileField.setAccessible(true);
-            
-            GameProfile profile = (GameProfile) profileField.get(headMeta);
-            if (profile != null && profile.getProperties().containsKey("textures")) {
-                return profile.getProperties().get("textures").iterator().next().getValue();
-            }
-        } catch (Exception e) {
-            //e.printStackTrace();
-        }
-        return null;
     }
 }

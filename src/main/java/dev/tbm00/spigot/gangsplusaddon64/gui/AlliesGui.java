@@ -84,9 +84,9 @@ public class AlliesGui {
 
             /*define item button's lore, name, flags, etc*/
                 ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+                Utils.applyHeadTexture(head, gang.getOwner());
                 SkullMeta headMeta = (SkullMeta) head.getItemMeta();
                 List<String> lore = new ArrayList<>();
-                Utils.applyHeadTexture(headMeta, gang.getOwner());
                 
                 String name = (gang.getFormattedName()!=null) ? gang.getFormattedName() : gang.getRawName();
                 int level = gang.getLevel();

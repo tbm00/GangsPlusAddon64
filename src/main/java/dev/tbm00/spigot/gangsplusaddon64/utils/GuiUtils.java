@@ -427,9 +427,9 @@ public class GuiUtils {
      */
     public static void setGuiItemMyGang(Gui gui, ItemMeta meta, Player player) {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        Utils.applyHeadTexture(head, player);
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();
         List<String> lore = new ArrayList<>();
-        Utils.applyHeadTexture(headMeta, player);
         lore.add("&8-----------------------");
         lore.add("&6Click to view your gang's members");
         headMeta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
@@ -439,9 +439,9 @@ public class GuiUtils {
         lore.clear();
     } public static void setGuiItemMyGang(PaginatedGui gui, ItemMeta meta, Player player) {
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        Utils.applyHeadTexture(head, player);
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();
         List<String> lore = new ArrayList<>();
-        Utils.applyHeadTexture(headMeta, player);
         lore.add("&8-----------------------");
         lore.add("&6Click to view your gang's members");
         headMeta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());

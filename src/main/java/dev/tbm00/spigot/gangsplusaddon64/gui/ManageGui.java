@@ -150,9 +150,9 @@ public class ManageGui {
     public void setGuiItemGangDisplay() {
         /*define item button's lore, name, flags, etc*/
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        Utils.applyHeadTexture(head, givenGang.getOwner());
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();
         List<String> lore = new ArrayList<>();
-        Utils.applyHeadTexture(headMeta, givenGang.getOwner());
         
         String name = (givenGang.getFormattedName()!=null) ? givenGang.getFormattedName() : givenGang.getRawName();
         int level = givenGang.getLevel();
