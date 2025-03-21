@@ -1,13 +1,7 @@
-# GangsPlusAddon64 v0.0.1-beta by @tbm00
+# GangsPlusAddon64 v0.0.2-beta by @tbm00
 # https://github.com/tbm00/GangsPlusAddon64
 
 enabled: true
-
-lang:
-  prefix: "&8[&fGangs&8] &7"
-
-feature:
-  enabled: true
 
 mysql:
   host: 'host'
@@ -25,3 +19,9 @@ mysql:
     leakDetection:
       enabled: false
       threshold: 2 # 2 seconds
+
+lang:
+  prefix: "&8[&fGangs&8] &7"
+
+feature:
+  enabled: true

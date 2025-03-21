@@ -32,6 +32,10 @@ public class GangsPlusAddon64 extends JavaPlugin {
             Utils.init(this, configHandler);
             GangUtils.init(this, configHandler);
             GuiUtils.init(this);
+
+            MySQLConnection mySQLConnection = new MySQLConnection(this);
+            mySQLConnection.loadHeadMetaCache();
+            mySQLConnection.closeConnection();
             
             Utils.log(ChatColor.LIGHT_PURPLE,
                     ChatColor.DARK_PURPLE + "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-",
@@ -151,6 +155,9 @@ public class GangsPlusAddon64 extends JavaPlugin {
      */
     @Override
     public void onDisable() {
+        MySQLConnection mySQLConnection = new MySQLConnection(this);
+        mySQLConnection.saveHeadMetaCache();
+        mySQLConnection.closeConnection();
         getLogger().info("GangsPlusAddon64 disabled..! ");
     }
 }
