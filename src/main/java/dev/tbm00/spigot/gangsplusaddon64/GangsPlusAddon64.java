@@ -7,8 +7,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.brcdev.gangs.GangsPlugin;
-import net.skinsrestorer.api.SkinsRestorer;
-import net.skinsrestorer.api.SkinsRestorerProvider;
 import net.slipcor.pvpstats.PVPStats;
 
 import dev.tbm00.spigot.rep64.Rep64;
@@ -22,7 +20,6 @@ public class GangsPlusAddon64 extends JavaPlugin {
     public static GangsPlugin gangHook;
     public static Rep64 repHook;
     public static PVPStats pvpHook;
-    public static SkinsRestorer skinHook;
 
     @Override
     public void onEnable() {
@@ -77,12 +74,6 @@ public class GangsPlusAddon64 extends JavaPlugin {
             disablePlugin();
             return;
         }
-
-        if (!setupSkinsRestorer()) {
-            getLogger().severe("SkinsRestorer hook failed -- disabling plugin!");
-            disablePlugin();
-            return;
-        }
     }
 
     /**
@@ -133,20 +124,6 @@ public class GangsPlusAddon64 extends JavaPlugin {
         else return false;
 
         Utils.log(ChatColor.GREEN, "Rep64 hooked.");
-        return true;
-    }
-
-    /**
-     * Attempts to hook into the kinsRestorer plugin.
-     *
-     * @return true if the hook was successful, false otherwise.
-     */
-    private boolean setupSkinsRestorer() {
-        if (!isPluginAvailable("SkinsRestorer")) return false;
-
-        skinHook = SkinsRestorerProvider.get();
-
-        Utils.log(ChatColor.GREEN, "SkinsRestorer hooked.");
         return true;
     }
 

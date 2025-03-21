@@ -106,12 +106,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.skinsrestorer</groupId>
-            <artifactId>skinsrestorer-api</artifactId>
-            <version>15.6.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>net.brcdev.gangs</groupId>
             <artifactId>GangsPlus</artifactId>
             <version>2.36.0</version>

@@ -9,7 +9,6 @@ Created by tbm00 for play.mc64.wtf.
 - **Spigot 1.18.1+**: UNTESTED ON OLDER VERSIONS
 - **GangsPlus**: REQUIRED
 - **PVPStats**: REQUIRED
-- **SkinsRestorer**: REQUIRED
 - **Rep64**: REQUIRED
 
 
