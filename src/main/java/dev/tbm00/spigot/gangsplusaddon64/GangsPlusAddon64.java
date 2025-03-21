@@ -13,7 +13,7 @@ import dev.tbm00.spigot.rep64.Rep64;
 
 import dev.tbm00.spigot.gangsplusaddon64.utils.*;
 import dev.tbm00.spigot.gangsplusaddon64.command.*;
-import dev.tbm00.spigot.gangsplusaddon64.listener.PlayerMovement;
+import dev.tbm00.spigot.gangsplusaddon64.listener.PlayerConnection;
 
 public class GangsPlusAddon64 extends JavaPlugin {
     private ConfigHandler configHandler;
@@ -42,7 +42,7 @@ public class GangsPlusAddon64 extends JavaPlugin {
 
             if (configHandler.isFeatureEnabled()) {
                 // Register Listener
-                getServer().getPluginManager().registerEvents(new PlayerMovement(), this);
+                getServer().getPluginManager().registerEvents(new PlayerConnection(this), this);
                 
                 // Register Commands
                 getCommand("ggg").setExecutor(new GangGuiCmd(this, configHandler));

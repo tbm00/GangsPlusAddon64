@@ -2,17 +2,15 @@ package dev.tbm00.spigot.gangsplusaddon64.utils;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.World;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -30,8 +28,6 @@ import dev.tbm00.spigot.gangsplusaddon64.ConfigHandler;
 public class Utils {
     private static GangsPlusAddon64 javaPlugin;
     private static ConfigHandler configHandler;
-    private static final Map<UUID, SkullMeta> headMetaCache = new HashMap<>();
-    public static final List<String> pendingTeleports = new CopyOnWriteArrayList<>();
 
     public static void init(GangsPlusAddon64 javaPlugin, ConfigHandler configHandler) {
         Utils.javaPlugin = javaPlugin;
@@ -132,44 +128,6 @@ public class Utils {
     }
 
     /**
-     * Teleports a player to the given world and coordinates after a 5-second delay.
-     * If the player moves during the delay, the teleport is cancelled.
-     *
-     * @param player the player to teleport
-     * @param worldName the target world's name
-     * @param x target x-coordinate
-     * @param y target y-coordinate
-     * @param z target z-coordinate
-     * @return true if the teleport countdown was started, false if the player was already waiting
-     */
-    public static boolean teleportPlayer(Player player, String worldName, double x, double y, double z) {
-        String playerName = player.getName();
-        if (pendingTeleports.contains(playerName)) {
-            Utils.sendMessage(player, "&cYou are already waiting for a teleport!");
-            return false;
-        }
-        pendingTeleports.add(playerName);
-        Utils.sendMessage(player, "&aTeleporting in 3 seconds -- don't move!");
-
-        // Schedule the teleport to run later
-        Bukkit.getScheduler().runTaskLater(javaPlugin, () -> {
-            if (pendingTeleports.contains(playerName)) {
-                // Remove player from pending list and teleport
-                pendingTeleports.remove(playerName);
-                World targetWorld = Bukkit.getWorld(worldName);
-                if (targetWorld != null) {
-                    Location targetLocation = new Location(targetWorld, x, y, z);
-                    player.teleport(targetLocation);
-                } else {
-                    Utils.sendMessage(player, "&cWorld not found!");
-                }
-            }
-        }, 60L);
-
-        return true;
-    }
-
-    /**
      * Executes a command as the console.
      * 
      * @param command the command to execute
@@ -241,6 +199,9 @@ public class Utils {
         }
     }
 
+    //old: private static final Map<UUID, SkullMeta> headMetaCache = new HashMap<>();
+    public static final Map<UUID, Pair<SkullMeta, Long>> headMetaCache = new HashMap<>();
+
     /**
      * Adds skin texture to head meta.
      * 
@@ -253,34 +214,47 @@ public class Utils {
     public static void applyHeadTexture(ItemStack head, OfflinePlayer player) {
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();
         UUID uuid = player.getUniqueId();
-        if (headMetaCache.containsKey(uuid)) {
-            // Use a clone of the cached SkullMeta
-            head.setItemMeta(headMetaCache.get(uuid).clone());
-        } else {
-            // Set the owning player to trigger skin loading
-            if (player.isOnline() && player instanceof Player) {
-                headMeta.setOwningPlayer((Player) player);
-            } else {
-                headMeta.setOwningPlayer(player);
-            }
+        boolean addToCache=false;
+        long currentTime=0;
+
+        if (player.isOnline() && player instanceof Player) {
+            currentTime = javaPlugin.getServer().getWorld("Tadow").getFullTime()/24000;
+            if (headMetaCache.containsKey(uuid) && headMetaCache.get(uuid).getRight()<currentTime) {
+                addToCache = true;
+            } else if (!headMetaCache.containsKey(uuid)) addToCache = true;
+
+            headMeta.setOwningPlayer((Player) player);
             head.setItemMeta(headMeta);
-    
-            // Delay to allow the server to apply the skin texture
-            Bukkit.getScheduler().runTaskLater(javaPlugin, () -> {
-                // Retrieve the updated SkullMeta from the ItemStack
-                SkullMeta updatedMeta = (SkullMeta) head.getItemMeta();
-                if (updatedMeta==null || !updatedMeta.getOwningPlayer().hasPlayedBefore()) {
-                    ItemStack blankHead = new ItemStack(Material.PLAYER_HEAD);
-                    SkullMeta blankMeta = (SkullMeta) blankHead.getItemMeta();
-                    
-                    blankMeta.setOwningPlayer(null);
-                    headMetaCache.put(uuid, blankMeta);
-                    log(ChatColor.YELLOW, "cached BLANK SkullMeta for " + uuid);
-                } else {
-                    headMetaCache.put(uuid, updatedMeta);
-                    log(ChatColor.GREEN, "cached SkullMeta for " + uuid);
-                }
-            }, 20L);
+        } else if (headMetaCache.containsKey(uuid)) {
+            head.setItemMeta(headMetaCache.get(uuid).getLeft().clone());
+        } else {
+            headMeta.setOwningPlayer(player);
+            head.setItemMeta(headMeta);
+            addToCache = true;
         }
+
+        if (!addToCache) return;
+        
+        final long updateTime = currentTime;
+        // Delay to allow the server to apply the skin texture
+        Bukkit.getScheduler().runTaskLater(javaPlugin, () -> {
+            // Retrieve the updated SkullMeta from the ItemStack
+            SkullMeta updatedMeta = (SkullMeta) head.getItemMeta();
+
+            if (updatedMeta==null || 
+                (updatedMeta.getOwningPlayer() != null && !updatedMeta.getOwningPlayer().hasPlayedBefore())) {
+                ItemStack blankHead = new ItemStack(Material.PLAYER_HEAD);
+                SkullMeta blankMeta = (SkullMeta) blankHead.getItemMeta();
+                
+                blankMeta.setOwningPlayer(null);
+                headMetaCache.put(uuid, Pair.of(blankMeta, updateTime));
+
+                Player online = javaPlugin.getServer().getPlayer(uuid);
+                String name = (online != null) ? online.getName() : uuid.toString();
+                log(ChatColor.RED, "Cached blank SkullMeta for " + name);
+            } else {
+                headMetaCache.put(uuid, Pair.of(updatedMeta, updateTime));
+            }
+        }, 20L);
     }
 }
