@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -50,31 +49,8 @@ public class GangGuiCmd implements TabExecutor {
 
         if (args.length == 0)
             return GangUtils.handleMainGuiCmd(player);
-
-        String subCmd = args[0].toLowerCase();
-        switch (subCmd) {
-            case "help":
-                return handleHelpCmd(player);
-            case "all":
-                return GangUtils.handleMainGuiCmd(player);
-            case "mine":
-                return GangUtils.handleMyGuiCmd(player);
-            default:
-                return GangUtils.handleSearch(player, args);
-        }
-    }
-    
-    /**
-     * Handles the sub command for the help menu.
-     * 
-     * @param player the command sender
-     * @return true after displaying help menu
-     */
-    private boolean handleHelpCmd(Player player) {
-        player.sendMessage(ChatColor.DARK_PURPLE + "--- " + ChatColor.LIGHT_PURPLE + "Shop Owner Commands" + ChatColor.DARK_PURPLE + " ---\n"
-            + ChatColor.WHITE + "/ggg <gang/player>" + ChatColor.GRAY + " Inspect gang/player stats"
-        );
-        return true;
+        else 
+            return GangUtils.handleSearch(player, args[0]);
     }
 
     /**

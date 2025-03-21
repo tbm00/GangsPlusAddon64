@@ -3,8 +3,6 @@ package dev.tbm00.spigot.gangsplusaddon64.utils;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -61,44 +59,35 @@ public class GangUtils {
      * @param args the arguments passed to the command
      * @return true if task was processed successfully
      */
-    public static boolean handleSearch(Player sender, String[] args) {
-        while (args[0].startsWith(" ")) {
-            args[0] = args[0].substring(1);
+    public static boolean handleSearch(Player sender, String arg) {
+        while (arg.startsWith(" ")) {
+            arg = arg.substring(1);
         }
 
         List<Gang> gangs = GangsPlusAddon64.gangHook.getGangManager().getAllGangs();
-        String targetUUID = GangsPlusAddon64.repHook.getRepManager().getPlayerUUID(args[0]);
-        OfflinePlayer target;
 
-        try {
-            target = javaPlugin.getServer().getOfflinePlayer(UUID.fromString(targetUUID));
-            for (Gang gang : gangs) {
-                if (gang.isMember(target)) {
-                    new PlayersGui(javaPlugin, gang, sender, 0);
-                    return true;
+        String targetUUID = GangsPlusAddon64.repHook.getRepManager().getPlayerUUID(arg);
+        if (targetUUID!=null) {
+            OfflinePlayer target;
+            try {
+                target = javaPlugin.getServer().getOfflinePlayer(UUID.fromString(targetUUID));
+                for (Gang gang : gangs) {
+                    if (gang.isMember(target)) {
+                        new PlayersGui(javaPlugin, gang, sender, 0);
+                        return true;
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
         }
-        
-        for (Gang gang : gangs) {
-            if (gang.getRawName().equalsIgnoreCase(args[0])
-                || gang.getName().equalsIgnoreCase(args[0])
-                || gang.getFormattedName().equalsIgnoreCase(args[0])) {
-                    new PlayersGui(javaPlugin, gang, sender, 0);
-                    return true;
-                }
+
+        if (GangsPlusAddon64.gangHook.getGangManager().isGang(arg)) {
+            new PlayersGui(javaPlugin, GangsPlusAddon64.gangHook.getGangManager().getGang(arg), sender, 0);
+            return true;
         }
-        for (Gang gang : gangs) {
-            if (StringUtils.containsIgnoreCase(gang.getRawName(), args[0])
-                || StringUtils.containsIgnoreCase(gang.getName(), args[0])
-                || StringUtils.containsIgnoreCase(gang.getFormattedName(), args[0])) {
-                    new PlayersGui(javaPlugin, gang, sender, 0);
-                    return true;
-                }
-        }
-        return false;
+
+        new GangsGui(javaPlugin, gangs, sender, 0);
+        return true;
     }
 }

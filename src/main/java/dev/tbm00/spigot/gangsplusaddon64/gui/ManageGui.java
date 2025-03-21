@@ -120,7 +120,7 @@ public class ManageGui {
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&eAllied Gangs"));
         item.setItemMeta(meta);
-        gui.setItem(2, 2, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleAllyMenuClick(event, givenGang)));
+        gui.setItem(3, 2, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleAllyMenuClick(event, givenGang)));
         lore.clear();
     }
 
@@ -139,7 +139,7 @@ public class ManageGui {
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&eFriendly Fire: &f" + givenGang.isFriendlyFire()));
         item.setItemMeta(meta);
-        gui.setItem(2, 3, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleFriendlyFireClick(gui, event, givenGang)));
+        gui.setItem(3, 3, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleFriendlyFireClick(gui, event, givenGang)));
         lore.clear();
     }
 
@@ -227,7 +227,7 @@ public class ManageGui {
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&eRank Permissions"));
         item.setItemMeta(meta);
-        gui.setItem(2, 7, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handlePermsClick(event, givenGang)));
+        gui.setItem(3, 7, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handlePermsClick(event, givenGang)));
         lore.clear();
     }
 
@@ -255,7 +255,7 @@ public class ManageGui {
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&eGang Commands"));
         item.setItemMeta(meta);
-        gui.setItem(2, 8, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
+        gui.setItem(3, 8, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
         lore.clear();
     }
 

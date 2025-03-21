@@ -574,7 +574,7 @@ public class GuiUtils {
         item.setItemMeta(meta);
         item.setAmount(1);
 
-        gui.setItem(2, 5, ItemBuilder.from(item).asGuiItem(event -> handleGangClick(event, sender, gang)));
+        gui.setItem(3, 5, ItemBuilder.from(item).asGuiItem(event -> handleGangClick(event, sender, gang)));
     } 
 
     /**
@@ -829,6 +829,6 @@ public class GuiUtils {
         item.setItemMeta(meta);
         item.setAmount(1);
 
-        gui.setItem(1, 5, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
+        gui.setItem(2, 5, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
     }
 }

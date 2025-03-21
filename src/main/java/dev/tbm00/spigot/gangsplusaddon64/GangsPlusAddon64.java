@@ -30,6 +30,7 @@ public class GangsPlusAddon64 extends JavaPlugin {
             configHandler = new ConfigHandler(this);
 
             Utils.init(this, configHandler);
+            GangUtils.init(this, configHandler);
             GuiUtils.init(this);
             
             Utils.log(ChatColor.LIGHT_PURPLE,
