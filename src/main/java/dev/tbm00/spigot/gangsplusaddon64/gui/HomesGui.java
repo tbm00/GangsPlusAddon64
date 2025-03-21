@@ -84,7 +84,7 @@ public class HomesGui {
 
         // 1 - (my) Gang Management
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(sender) && gang.isMember(sender)) {
-            GuiUtils.setGuiItemManage(gui, item, meta, lore, gang);
+            GuiUtils.setGuiItemMyManage(gui, item, meta, lore, gang);
         } else {
             gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         }
@@ -99,8 +99,8 @@ public class HomesGui {
         gui.setItem(6, 2, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleHomesClick(event, (Player) event.getWhoClicked(), gang)));
         lore.clear();
         
-        // 3 - My Gang
-        GuiUtils.setGuiItemMyGang(gui, meta, sender);
+        // 3 - (my) Gang Members
+        GuiUtils.setGuiItemMyMembers(gui, meta, sender);
         
         // 4 - empty
         gui.setItem(6, 4, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));

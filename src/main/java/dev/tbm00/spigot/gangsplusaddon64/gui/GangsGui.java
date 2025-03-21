@@ -107,21 +107,21 @@ public class GangsGui {
 
         // 1 - (my) Gang Management
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player)) {
-            GuiUtils.setGuiItemManage(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player));
+            GuiUtils.setGuiItemMyManage(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player));
         } else {
             gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         }
         
         // 2 - (my) Gang Homes
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player)) {
-            GuiUtils.setGuiItemHomes(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player));
+            GuiUtils.setGuiItemMyHomes(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player));
         } else {
             gui.setItem(6, 2, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         }
 
         // 3 - (my) Gang Members
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player))
-            GuiUtils.setGuiItemMyGang(gui, meta, player);
+            GuiUtils.setGuiItemMyMembers(gui, meta, player);
         else gui.setItem(6, 3, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
 
         // 4 - empty

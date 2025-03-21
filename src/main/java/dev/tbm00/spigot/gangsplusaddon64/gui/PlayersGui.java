@@ -122,14 +122,14 @@ public class PlayersGui {
 
         // 1 - (my) Gang Management
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(sender)) {
-            GuiUtils.setGuiItemManage(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(sender));
+            GuiUtils.setGuiItemMyManage(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(sender));
         } else {
             gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         }
         
         // 2 - (my) Gang Homes
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(sender)) {
-            GuiUtils.setGuiItemHomes(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(sender));
+            GuiUtils.setGuiItemMyHomes(gui, item, meta, lore, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(sender));
         } else {
             gui.setItem(6, 2, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         }
@@ -150,7 +150,7 @@ public class PlayersGui {
                 gui.setItem(6, 3, ItemBuilder.from(head).asGuiItem(event -> {event.setCancelled(true);}));
                 headLore.clear();
             } else {
-                GuiUtils.setGuiItemMyGang(gui, meta, sender);
+                GuiUtils.setGuiItemMyMembers(gui, meta, sender);
             }
         } else gui.setItem(6, 3, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         
@@ -160,8 +160,8 @@ public class PlayersGui {
         // 5 - All Gangs
         GuiUtils.setGuiItemAllGangs(gui, item, meta, lore);
 
-        // 6 - empty
-        gui.setItem(6, 6, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        // 6 - currently viewing gang
+        GuiUtils.setGuiItemCurrGangDisplay(gui, gang, sender);
 
         // 7 - previous
         if (gui.getPagesNum()>=2) GuiUtils.setGuiItemPageBack(gui, item, meta, lore, label);

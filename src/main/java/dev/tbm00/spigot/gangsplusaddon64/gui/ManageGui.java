@@ -83,14 +83,14 @@ public class ManageGui {
         
         // 2 - Gang Homes
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player) && givenGang.isMember(player)) {
-            GuiUtils.setGuiItemHomes(gui, item, meta, lore, givenGang);
+            GuiUtils.setGuiItemMyHomes(gui, item, meta, lore, givenGang);
         } else {
             gui.setItem(6, 2, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         }
         
-        // 3 - My Gang
+        // 3 - (my) Gang Members
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(player)) {
-            GuiUtils.setGuiItemMyGang(gui, meta, player);
+            GuiUtils.setGuiItemMyMembers(gui, meta, player);
         } else gui.setItem(6, 3, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         
         // 4 - empty
@@ -171,7 +171,7 @@ public class ManageGui {
         int deaths = givenGang.getDeaths();
         double kdr = givenGang.getKdRatio();
         
-        GuiUtils.setGuiItemGang(gui, player, givenGang, head, headMeta, lore, name, level, memberCount, ownerName, createdAt, wins, loses, wlr, kills, deaths, kdr);
+        GuiUtils.setGuiItemMngGangDisplay(gui, player, givenGang, head, headMeta, lore, name, level, memberCount, ownerName, createdAt, wins, loses, wlr, kills, deaths, kdr);
     }
 
     /**
@@ -209,7 +209,7 @@ public class ManageGui {
             e.printStackTrace();
         }
 
-        GuiUtils.setGuiItemPlayer(gui, player, givenGang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_kills, p_deaths, p_kdr);
+        GuiUtils.setGuiItemMngPlayerDisplay(gui, player, givenGang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_kills, p_deaths, p_kdr);
     }
 
     /**

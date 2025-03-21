@@ -1,5 +1,6 @@
 package dev.tbm00.spigot.gangsplusaddon64.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -419,39 +420,6 @@ public class GuiUtils {
     }
 
     /**
-     * Sets the gang GUI's footer button: my gang.
-     *
-     * @param gui the gui that will be sent to the player
-     * @param meta holder for current item's meta
-     * @param player player to open for
-     */
-    public static void setGuiItemMyGang(Gui gui, ItemMeta meta, Player player) {
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        Utils.applyHeadTexture(head, player);
-        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
-        List<String> lore = new ArrayList<>();
-        lore.add("&8-----------------------");
-        lore.add("&6Click to view your gang's members");
-        headMeta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
-        headMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dGang Members"));
-        head.setItemMeta(headMeta);
-        gui.setItem(6, 3, ItemBuilder.from(head).asGuiItem(event -> GuiUtils.handleGangClick(event, player, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player))));
-        lore.clear();
-    } public static void setGuiItemMyGang(PaginatedGui gui, ItemMeta meta, Player player) {
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        Utils.applyHeadTexture(head, player);
-        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
-        List<String> lore = new ArrayList<>();
-        lore.add("&8-----------------------");
-        lore.add("&6Click to view your gang's members");
-        headMeta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
-        headMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dGang Members"));
-        head.setItemMeta(headMeta);
-        gui.setItem(6, 3, ItemBuilder.from(head).asGuiItem(event -> GuiUtils.handleGangClick(event, player, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player))));
-        lore.clear();
-    }
-
-    /**
      * Sets the gang GUI's footer's previous page button format.
      *
      * @param gui the gui that will be sent to the player
@@ -492,6 +460,39 @@ public class GuiUtils {
     }
 
     /**
+     * Sets the gang GUI's footer button: my gang.
+     *
+     * @param gui the gui that will be sent to the player
+     * @param meta holder for current item's meta
+     * @param player player to open for
+     */
+    public static void setGuiItemMyMembers(Gui gui, ItemMeta meta, Player player) {
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        Utils.applyHeadTexture(head, player);
+        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        lore.add("&8-----------------------");
+        lore.add("&6Click to view your gang's members");
+        headMeta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
+        headMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dGang Members"));
+        head.setItemMeta(headMeta);
+        gui.setItem(6, 3, ItemBuilder.from(head).asGuiItem(event -> GuiUtils.handleGangClick(event, player, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player))));
+        lore.clear();
+    } public static void setGuiItemMyMembers(PaginatedGui gui, ItemMeta meta, Player player) {
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        Utils.applyHeadTexture(head, player);
+        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        lore.add("&8-----------------------");
+        lore.add("&6Click to view your gang's members");
+        headMeta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
+        headMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dGang Members"));
+        head.setItemMeta(headMeta);
+        gui.setItem(6, 3, ItemBuilder.from(head).asGuiItem(event -> GuiUtils.handleGangClick(event, player, GangsPlusAddon64.gangHook.getGangManager().getPlayersGang(player))));
+        lore.clear();
+    }
+
+    /**
      * Sets the gang GUI's footer's previous page button format.
      *
      * @param gui the gui that will be sent to the player
@@ -500,7 +501,7 @@ public class GuiUtils {
      * @param lore holder for current item's lore
      * @param gang the gang owning the home
      */
-    public static void setGuiItemHomes(Gui gui, ItemStack item, ItemMeta meta, List<String> lore, Gang gang) {
+    public static void setGuiItemMyHomes(Gui gui, ItemStack item, ItemMeta meta, List<String> lore, Gang gang) {
         lore.add("&8-----------------------");
         lore.add("&6Click to view your gang's homes");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
@@ -509,7 +510,7 @@ public class GuiUtils {
         item.setType(Material.COMPASS);
         gui.setItem(6, 2, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleHomesClick(event, (Player) event.getWhoClicked(), gang)));
         lore.clear();
-    } public static void setGuiItemHomes(PaginatedGui gui, ItemStack item, ItemMeta meta, List<String> lore, Gang gang) {
+    } public static void setGuiItemMyHomes(PaginatedGui gui, ItemStack item, ItemMeta meta, List<String> lore, Gang gang) {
         lore.add("&8-----------------------");
         lore.add("&6Click to view your gang's homes");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
@@ -529,7 +530,7 @@ public class GuiUtils {
      * @param lore holder for current item's lore
      * @param gang the gang owning the home
      */
-    public static void setGuiItemManage(Gui gui, ItemStack item, ItemMeta meta, List<String> lore, Gang gang) {
+    public static void setGuiItemMyManage(Gui gui, ItemStack item, ItemMeta meta, List<String> lore, Gang gang) {
         lore.add("&8-----------------------");
         lore.add("&6Click to open your gang's manage GUI");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
@@ -538,7 +539,7 @@ public class GuiUtils {
         item.setType(Material.CHEST);
         gui.setItem(6, 1, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleManageMenuClick(event, gang)));
         lore.clear();
-    } public static void setGuiItemManage(PaginatedGui gui, ItemStack item, ItemMeta meta, List<String> lore, Gang gang) {
+    } public static void setGuiItemMyManage(PaginatedGui gui, ItemStack item, ItemMeta meta, List<String> lore, Gang gang) {
         lore.add("&8-----------------------");
         lore.add("&6Click to open your gang's manage GUI");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
@@ -549,7 +550,79 @@ public class GuiUtils {
         lore.clear();
     }
 
-    public static void setGuiItemGang(Gui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int level, int memberCount, String ownerName, String createdAt, int wins, int loses, double wlr, int kills, int deaths, double kdr) {
+    /**
+     * Configures and adds the GUI item for displaying the current gang's info (used only in PlayersGui).
+     * 
+     */
+    public static void setGuiItemCurrGangDisplay(PaginatedGui gui, Gang givenGang, Player sender) {
+        /*define item button's lore, name, flags, etc*/
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+        Utils.applyHeadTexture(item, givenGang.getOwner());
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        
+        String name = (givenGang.getFormattedName()!=null) ? givenGang.getFormattedName() : givenGang.getRawName();
+        int level = givenGang.getLevel();
+        int memberCount = givenGang.getAllMembersCount();
+        String ownerName = givenGang.getOwnerName();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy, HH:mm");
+        String createdAt = dateFormat.format(givenGang.getCreatedAt());
+        
+        int wins = givenGang.getFightsWon();
+        int loses = givenGang.getFightsLost();
+        double wlr = givenGang.getWlRatio();
+
+        int kills = givenGang.getKills();
+        int deaths = givenGang.getDeaths();
+        double kdr = givenGang.getKdRatio();
+        
+        meta.setLore(null);
+        lore.add("&8-----------------------");
+        lore.add("&f" + memberCount + " &7members, " + ownerName);
+        lore.add("&7Created " + createdAt);
+        lore.add("");
+        lore.add("&7Kills: &f" + kills + "&7, Deaths: &f" + deaths + "&7, Ratio: &f" + String.format("%.1f", kdr));
+        lore.add("&7Wins: &f" + wins + "&7, Loses: &f" + loses + "&7, Ratio: &f" + String.format("%.1f", wlr));
+
+        meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name + "&7- Lvl. " + level));
+        meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+        meta.addItemFlags(ItemFlag.HIDE_ARMOR_TRIM);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        meta.addItemFlags(ItemFlag.HIDE_DESTROYS);
+        meta.addItemFlags(ItemFlag.HIDE_DYE);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+
+        item.setItemMeta(meta);
+        item.setAmount(1);
+
+        gui.setItem(6, 6, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
+    }
+
+    /**
+     * Formats and adds an gang to the gang GUI.
+     *
+     * @param gui the paginated GUI to which the item will be added
+     * @param sender the player viewing the gang
+     * @param gang the gang associated with the item
+     * @param item the head to be displayed in the GUI
+     * @param meta the metadata of the item
+     * @param lore the list of lore descriptions to be displayed
+     * @param name the gang's name
+     * @param level the gang's current
+     * @param memberCount the gang's current
+     * @param ownerName the gang's current
+     * @param createdAt the gang's creation
+     * @param wins the gang's current
+     * @param loses the gang's current
+     * @param wlr the gang's current
+     * @param kill the gang's current
+     * @param deaths the gang's current
+     * @param kdr the gang's current
+     */
+    public static void setGuiItemMngGangDisplay(Gui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int level, int memberCount, String ownerName, String createdAt, int wins, int loses, double wlr, int kills, int deaths, double kdr) {
         meta.setLore(null);
         lore.add("&8-----------------------");
         lore.add("&f" + memberCount + " &7members, " + ownerName);
@@ -801,7 +874,7 @@ public class GuiUtils {
         gui.disableOtherActions();
     }
 
-    public static void setGuiItemPlayer(Gui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, double p_elo, int p_kills, int p_deaths, double p_kdr) {
+    public static void setGuiItemMngPlayerDisplay(Gui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, double p_elo, int p_kills, int p_deaths, double p_kdr) {
         meta.setLore(null);
         lore.add("&8-----------------------");
         lore.add("&7Gang Rank: &f" + GANG_RANKS[rank-1]);
