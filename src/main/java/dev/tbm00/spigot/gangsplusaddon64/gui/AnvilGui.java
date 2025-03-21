@@ -18,7 +18,7 @@ public class AnvilGui {
     /**
      * Creates an anvil gui for player to enter text and search shops with.
      */
-    public AnvilGui(GangsPlusAddon64 javaPlugin, Player player, String title, String command, String defaultText) {
+    public AnvilGui(GangsPlusAddon64 javaPlugin, Player player, String title, String command, String defaultText, Material outputMat) {
         ItemStack leftItem = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
         ItemMeta leftMeta = leftItem.getItemMeta();
         leftMeta.setDisplayName(" ");
@@ -31,7 +31,7 @@ public class AnvilGui {
         rightMeta.setItemName(defaultText);
         rightItem.setItemMeta(rightMeta);
 
-        ItemStack outputItem = new ItemStack(Material.HOPPER);
+        ItemStack outputItem = new ItemStack(outputMat);
         ItemMeta outputMeta = outputItem.getItemMeta();
         outputMeta.setDisplayName("click to enter");
         outputMeta.setItemName("click to enter");

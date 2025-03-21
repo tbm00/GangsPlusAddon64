@@ -100,17 +100,4 @@ public class GangUtils {
         }
         return false;
     }
-
-    /**
-     * Teleports the player to the given shop's location.
-     * 
-     * @param player the player to teleport
-     * @param shop the shop whose location the player will be teleported to
-     
-    public static void teleportPlayerToShop(Player player, Shop shop) {
-        double x=shop.getBaseLocation().getX(), y=shop.getBaseLocation().getY(), z=shop.getBaseLocation().getZ();
-        String world=shop.getBaseLocation().getWorldName();
-
-        Utils.teleportPlayer(player, world, x, y+1, z);
-    }*/
 }

@@ -244,7 +244,7 @@ public class GuiUtils {
      */
     public static void handleAllyAddClick(InventoryClickEvent event, Gang gang) {
         event.setCancelled(true);
-        new AnvilGui(javaPlugin, (Player) event.getWhoClicked(), "Ally with Gang", "g ally ", "enter gang");
+        new AnvilGui(javaPlugin, (Player) event.getWhoClicked(), "Ally with Gang", "g ally ", "enter gang", Material.POPPY);
     }
 
     /**
@@ -280,7 +280,7 @@ public class GuiUtils {
      */
     public static void handleDepositClick(InventoryClickEvent event, Gang gang) {
         event.setCancelled(true);
-        new AnvilGui(javaPlugin, (Player) event.getWhoClicked(), "Deposit $ to Gang Bank", "g deposit ", "enter amount");
+        new AnvilGui(javaPlugin, (Player) event.getWhoClicked(), "Deposit $ to Gang Bank", "g deposit ", "enter amount", Material.GOLD_INGOT);
     }
 
     /**
@@ -341,10 +341,10 @@ public class GuiUtils {
         lore.add("&6Click to change sort order");
         lore.add("&6("+ GANG_SORT_TYPES[type] + " -> " + GANG_SORT_TYPES[next] + ")");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dSort Gangs"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fSort Gangs"));
         item.setItemMeta(meta);
         item.setType(Material.HOPPER);
-        gui.setItem(6, 6, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortGangsClick(event, next)));
+        gui.setItem(6, 9, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortGangsClick(event, next)));
         lore.clear();
     }
 
@@ -364,10 +364,10 @@ public class GuiUtils {
         lore.add("&6Click to change sort order");
         lore.add("&6("+ GANG_SORT_TYPES[type] + " -> " + GANG_SORT_TYPES[next] + ")");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dSort Gangs"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fSort Gangs"));
         item.setItemMeta(meta);
         item.setType(Material.HOPPER);
-        gui.setItem(6, 6, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortGangsAdminClick(event, next)));
+        gui.setItem(6, 9, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortGangsAdminClick(event, next)));
         lore.clear();
     }
 
@@ -388,10 +388,10 @@ public class GuiUtils {
         lore.add("&6Click to change sort order");
         lore.add("&6("+ PLAYER_SORT_TYPES[type] + " -> " + PLAYER_SORT_TYPES[next] + ")");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dSort Players"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fSort Players"));
         item.setItemMeta(meta);
         item.setType(Material.HOPPER);
-        gui.setItem(6, 6, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortPlayersClick(event, next, gang)));
+        gui.setItem(6, 9, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortPlayersClick(event, next, gang)));
         lore.clear();
     }
 
@@ -411,10 +411,10 @@ public class GuiUtils {
         lore.add("&6Click to change sort order");
         lore.add("&6("+ GANG_SORT_TYPES[type] + " -> " + GANG_SORT_TYPES[next] + ")");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dSort Allied Gangs"));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fSort Allied Gangs"));
         item.setItemMeta(meta);
         item.setType(Material.HOPPER);
-        gui.setItem(6, 6, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortAlliesClick(event, next, gang)));
+        gui.setItem(6, 9, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortAlliesClick(event, next, gang)));
         lore.clear();
     }
 
@@ -467,7 +467,7 @@ public class GuiUtils {
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fPrevious Page"));
         item.setItemMeta(meta);
         item.setType(Material.STONE_BUTTON);
-        gui.setItem(6, 8, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handlePageClick(event, gui, false, label)));
+        gui.setItem(6, 7, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handlePageClick(event, gui, false, label)));
         lore.clear();
     }
 
@@ -487,7 +487,7 @@ public class GuiUtils {
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fNext Page"));
         item.setItemMeta(meta);
         item.setType(Material.STONE_BUTTON);
-        gui.setItem(6, 9, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handlePageClick(event, gui, true, label)));
+        gui.setItem(6, 8, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handlePageClick(event, gui, true, label)));
         lore.clear();
     }
 
@@ -763,7 +763,7 @@ public class GuiUtils {
         lore.add("&7Kills: &f" + g_kills + "&7, Deaths: &f" + g_deaths + "&7, Ratio: &f" + String.format("%.1f", g_kdr));
     
         
-        if (gang.isMember(sender) && gang.getMemberData(sender).getRank()>=3) {
+        if (gang.isMember(sender) && gang.getMemberData(sender).getRank()>=3 && !gang.getOwner().equals(sender)) {
             lore.add("&8-----------------------");
             if (rank==1) {
                 lore.add("&6Shift-Left-Click to promote to " + GANG_RANKS[rank]);
@@ -799,5 +799,36 @@ public class GuiUtils {
         gui.disableItemSwap();
         gui.disableItemTake();
         gui.disableOtherActions();
+    }
+
+    public static void setGuiItemPlayer(Gui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, double p_elo, int p_kills, int p_deaths, double p_kdr) {
+        meta.setLore(null);
+        lore.add("&8-----------------------");
+        lore.add("&7Gang Rank: &f" + GANG_RANKS[rank-1]);
+        lore.add("&7Elo: &f"+p_elo);
+
+        lore.add("");
+        lore.add("           &7&oPVP Only");
+        lore.add("&7Kills: &f" + p_kills + "&7, Deaths: &f" + p_deaths + "&7, Ratio: &f" + String.format("%.1f", p_kdr));
+
+        lore.add("");
+        lore.add("           &7&oPVP & PVE");
+        lore.add("&7Kills: &f" + g_kills + "&7, Deaths: &f" + g_deaths + "&7, Ratio: &f" + String.format("%.1f", g_kdr));
+
+        meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
+        meta.addItemFlags(ItemFlag.HIDE_ARMOR_TRIM);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        meta.addItemFlags(ItemFlag.HIDE_DESTROYS);
+        meta.addItemFlags(ItemFlag.HIDE_DYE);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+
+        item.setItemMeta(meta);
+        item.setAmount(1);
+
+        gui.setItem(1, 5, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
     }
 }

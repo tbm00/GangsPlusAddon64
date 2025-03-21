@@ -16,6 +16,7 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 
 import net.brcdev.gangs.gang.Gang;
+import net.brcdev.gangs.player.PlayerData;
 
 import dev.tbm00.spigot.gangsplusaddon64.GangsPlusAddon64;
 import dev.tbm00.spigot.gangsplusaddon64.utils.*;
@@ -49,6 +50,7 @@ public class ManageGui {
         setGuiItemBalance();
         setGuiItemLevelUp();
         setGuiItemGangDisplay();
+        setGuiItemPlayerDisplay();
         
         setupFooter();
 
@@ -170,6 +172,44 @@ public class ManageGui {
         double kdr = givenGang.getKdRatio();
         
         GuiUtils.setGuiItemGang(gui, player, givenGang, head, headMeta, lore, name, level, memberCount, ownerName, createdAt, wins, loses, wlr, kills, deaths, kdr);
+    }
+
+    /**
+     * Configures the GUI item for displaying the player information.
+     * 
+     * Sets up a player head item with gang details including name, rank, elo,
+     * kills, deaths, and KDR.
+     */
+    public void setGuiItemPlayerDisplay() {
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        Utils.applyHeadTexture(head, player);
+        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+        List<String> lore = new ArrayList<>();
+
+        String name = player.getName();
+        int rank = givenGang.getMemberData(player).getRank();
+        PlayerData data = GangsPlusAddon64.gangHook.getPlayerManager().getPlayerData(player);
+        
+        int g_kills=0, g_deaths=0;
+        double g_kdr=0;
+        try {
+            g_kills = data.getKills();
+            g_deaths = data.getDeaths();
+            g_kdr = data.getKdRatio();
+        } catch (Exception e) {}
+
+        int p_kills=0, p_deaths=0;
+        double p_kdr=0, p_elo=0;
+        try {
+            p_elo = Utils.getPvpStat("elo", player);
+            p_kills = Utils.getPvpStat("kills", player);
+            p_deaths = Utils.getPvpStat("deaths", player);
+            p_kdr = (p_deaths > 0) ? ((double) p_kills / p_deaths) : 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        GuiUtils.setGuiItemPlayer(gui, player, givenGang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_kills, p_deaths, p_kdr);
     }
 
     /**

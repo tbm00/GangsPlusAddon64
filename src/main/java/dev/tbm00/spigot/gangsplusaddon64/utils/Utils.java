@@ -7,10 +7,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.lang.reflect.Field;
-
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -34,8 +30,8 @@ import dev.tbm00.spigot.gangsplusaddon64.ConfigHandler;
 public class Utils {
     private static GangsPlusAddon64 javaPlugin;
     private static ConfigHandler configHandler;
+    private static final Map<UUID, SkullMeta> headMetaCache = new HashMap<>();
     public static final List<String> pendingTeleports = new CopyOnWriteArrayList<>();
-    
 
     public static void init(GangsPlusAddon64 javaPlugin, ConfigHandler configHandler) {
         Utils.javaPlugin = javaPlugin;
@@ -244,8 +240,6 @@ public class Utils {
             return 0;
         }
     }
-
-    private static final Map<UUID, SkullMeta> headMetaCache = new HashMap<>();
 
     /**
      * Adds skin texture to head meta.
