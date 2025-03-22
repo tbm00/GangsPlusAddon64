@@ -15,11 +15,11 @@ Created by tbm00 for play.mc64.wtf.
 
 ## Commands
 #### Player Commands 
-- `/ggg` Open gang GUI
-- `/ggg <gang/player>` Open GUI by player/gang
+- `/gangs` Open gang GUI
+- `/gangs <gang/player>` Open GUI by player/gang
 
 #### Admin Commands
-- `/ggga` Open gang admin GUI
+- `/gangsadmin` Open gang admin GUI
 
 
 ## Permissions
@@ -32,7 +32,7 @@ Created by tbm00 for play.mc64.wtf.
 
 ## Config
 ```
-# GangsPlusAddon64 v0.0.2-beta by @tbm00
+# GangsPlusAddon64 v0.0.3-beta by @tbm00
 # https://github.com/tbm00/GangsPlusAddon64
 
 enabled: true

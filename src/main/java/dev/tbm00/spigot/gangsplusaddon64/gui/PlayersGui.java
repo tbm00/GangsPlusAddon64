@@ -108,7 +108,7 @@ public class PlayersGui {
                 e.printStackTrace();
             }
 
-            GuiUtils.addGuiItemPlayer(gui, sender, gang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_kills, p_deaths, p_kdr, currentSortIndex);
+            GuiUtils.addGuiItemPlayer(gui, sender, player.getUniqueId(), gang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_kills, p_deaths, p_kdr, currentSortIndex);
         }
     }
 

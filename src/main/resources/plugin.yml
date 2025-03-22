@@ -6,9 +6,9 @@ main: dev.tbm00.spigot.gangsplusaddon64.GangsPlusAddon64
 api-version: 1.17
 depend: [GangsPlus, Rep64]
 commands:
-  ggg:
+  gangs:
     description: Main command for GangsPlusAddon64
-  ggga:
+  gangsadmin:
     description: Admin command for GangsPlusAddon64
 permissions:
   gangsplusaddon64.player:

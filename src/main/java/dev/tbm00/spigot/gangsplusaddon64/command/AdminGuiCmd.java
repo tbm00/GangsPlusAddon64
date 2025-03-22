@@ -25,7 +25,7 @@ public class AdminGuiCmd implements TabExecutor {
     }
 
     /**
-     * Handles the /ggg command.
+     * Handles the /gangs command.
      * 
      * @param player the command sender
      * @param consoleCommand the command being executed
@@ -50,7 +50,7 @@ public class AdminGuiCmd implements TabExecutor {
     }
 
     /**
-     * Handles tab completion for the /ggg command.
+     * Handles tab completion for the /gangs command.
      */
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {

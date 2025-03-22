@@ -50,8 +50,8 @@ public class GangsPlusAddon64 extends JavaPlugin {
                 getServer().getPluginManager().registerEvents(new PlayerConnection(this), this);
                 
                 // Register Commands
-                getCommand("ggg").setExecutor(new GangGuiCmd(this, configHandler));
-                getCommand("ggga").setExecutor(new AdminGuiCmd(this, configHandler));
+                getCommand("gangs").setExecutor(new GangGuiCmd(this, configHandler));
+                getCommand("gangsadmin").setExecutor(new AdminGuiCmd(this, configHandler));
             }
         }
     }
@@ -99,12 +99,12 @@ public class GangsPlusAddon64 extends JavaPlugin {
     }
 
     /**
-     * Attempts to hook into the GangsPlus plugin.
+     * Attempts to hook into the PVPStats plugin.
      *
      * @return true if the hook was successful, false otherwise.
      */
     private boolean setupPVPStats() {
-        if (!isPluginAvailable("GangsPlus")) return false;
+        if (!isPluginAvailable("PVPStats")) return false;
 
         Plugin pvpp = Bukkit.getPluginManager().getPlugin("PVPStats");
         if (pvpp.isEnabled() && pvpp instanceof PVPStats)

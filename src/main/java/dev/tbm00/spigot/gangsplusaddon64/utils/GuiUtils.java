@@ -3,6 +3,7 @@ package dev.tbm00.spigot.gangsplusaddon64.utils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.bukkit.Bukkit;
@@ -806,6 +807,7 @@ public class GuiUtils {
      *
      * @param gui the paginated GUI to which the item will be added
      * @param sender the player viewing the gang
+     * @param targetUUID the player on the button's uuid
      * @param gang the gang to be viewed
      * @param item the head to be displayed in the GUI
      * @param meta the metadata of the item
@@ -821,7 +823,7 @@ public class GuiUtils {
      * @param p_kdr the player's current
      * @param sortIndex the index used to re-open gui with prior sort
      */
-    public static void addGuiItemPlayer(PaginatedGui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, double p_elo, int p_kills, int p_deaths, double p_kdr, int sortIndex) {
+    public static void addGuiItemPlayer(PaginatedGui gui, Player sender, UUID targetUUID, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, double p_elo, int p_kills, int p_deaths, double p_kdr, int sortIndex) {
         meta.setLore(null);
         lore.add("&8-----------------------");
         lore.add("&7Gang Rank: &f" + GANG_RANKS[rank-1]);
@@ -836,7 +838,7 @@ public class GuiUtils {
         lore.add("&7Kills: &f" + g_kills + "&7, Deaths: &f" + g_deaths + "&7, Ratio: &f" + String.format("%.1f", g_kdr));
     
         
-        if (gang.isMember(sender) && gang.getMemberData(sender).getRank()>=3 && !gang.getOwner().equals(sender)) {
+        if (gang.isMember(sender) && gang.getMemberData(sender).getRank()>=3 && !gang.getOwner().getUniqueId().equals(targetUUID)) {
             lore.add("&8-----------------------");
             if (rank==1) {
                 lore.add("&6Shift-Left-Click to promote to " + GANG_RANKS[rank]);
