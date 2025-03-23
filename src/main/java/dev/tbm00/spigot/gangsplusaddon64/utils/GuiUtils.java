@@ -1,10 +1,11 @@
 package dev.tbm00.spigot.gangsplusaddon64.utils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -566,7 +567,7 @@ public class GuiUtils {
         int level = givenGang.getLevel();
         int memberCount = givenGang.getAllMembersCount();
         String ownerName = givenGang.getOwnerName();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy, HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String createdAt = dateFormat.format(givenGang.getCreatedAt());
         
         int wins = givenGang.getFightsWon();
@@ -579,8 +580,9 @@ public class GuiUtils {
         
         meta.setLore(null);
         lore.add("&8-----------------------");
-        lore.add("&f" + memberCount + " &7members, " + ownerName);
-        lore.add("&7Created " + createdAt);
+        lore.add("&f" + memberCount + " &7members");
+        lore.add("&7Leader: &f" + ownerName);
+        lore.add("&7Created: &f" + createdAt);
         lore.add("");
         lore.add("&7Kills: &f" + kills + "&7, Deaths: &f" + deaths + "&7, Ratio: &f" + String.format("%.1f", kdr));
         lore.add("&7Wins: &f" + wins + "&7, Loses: &f" + loses + "&7, Ratio: &f" + String.format("%.1f", wlr));
@@ -626,8 +628,9 @@ public class GuiUtils {
     public static void setGuiItemMngGangDisplay(Gui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int level, int memberCount, String ownerName, String createdAt, int wins, int loses, double wlr, int kills, int deaths, double kdr) {
         meta.setLore(null);
         lore.add("&8-----------------------");
-        lore.add("&f" + memberCount + " &7members, " + ownerName);
-        lore.add("&7Created " + createdAt);
+        lore.add("&f" + memberCount + " &7members");
+        lore.add("&7Leader: &f" + ownerName);
+        lore.add("&7Created: &f" + createdAt);
         lore.add("");
         lore.add("&7Kills: &f" + kills + "&7, Deaths: &f" + deaths + "&7, Ratio: &f" + String.format("%.1f", kdr));
         lore.add("&7Wins: &f" + wins + "&7, Loses: &f" + loses + "&7, Ratio: &f" + String.format("%.1f", wlr));
@@ -675,8 +678,9 @@ public class GuiUtils {
     public static void addGuiItemGang(PaginatedGui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int level, int memberCount, String ownerName, String createdAt, int wins, int loses, double wlr, int kills, int deaths, double kdr) {
         meta.setLore(null);
         lore.add("&8-----------------------");
-        lore.add("&f" + memberCount + " &7members, " + ownerName);
-        lore.add("&7Created " + createdAt);
+        lore.add("&f" + memberCount + " &7members");
+        lore.add("&7Leader: &f" + ownerName);
+        lore.add("&7Created: &f" + createdAt);
         lore.add("");
         lore.add("&7Kills: &f" + kills + "&7, Deaths: &f" + deaths + "&7, Ratio: &f" + String.format("%.1f", kdr));
         lore.add("&7Wins: &f" + wins + "&7, Loses: &f" + loses + "&7, Ratio: &f" + String.format("%.1f", wlr));
@@ -724,8 +728,9 @@ public class GuiUtils {
     public static void addGuiItemGangAdmin(PaginatedGui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int level, int memberCount, String ownerName, String createdAt, int wins, int loses, double wlr, int kills, int deaths, double kdr) {
         meta.setLore(null);
         lore.add("&8-----------------------");
-        lore.add("&f" + memberCount + " &7members, " + ownerName);
-        lore.add("&7Created " + createdAt);
+        lore.add("&f" + memberCount + " &7members");
+        lore.add("&7Leader: &f" + ownerName);
+        lore.add("&7Created: &f" + createdAt);
         lore.add("");
         lore.add("&7Kills: &f" + kills + "&7, Deaths: &f" + deaths + "&7, Ratio: &f" + String.format("%.1f", kdr));
         lore.add("&7Wins: &f" + wins + "&7, Loses: &f" + loses + "&7, Ratio: &f" + String.format("%.1f", wlr));
@@ -775,8 +780,9 @@ public class GuiUtils {
     public static void addGuiItemGangAlly(PaginatedGui gui, Player sender, Gang gang, Gang givenGang, ItemStack item, ItemMeta meta, List<String> lore, String name, int level, int memberCount, String ownerName, String createdAt, int wins, int loses, double wlr, int kills, int deaths, double kdr) {
         meta.setLore(null);
         lore.add("&8-----------------------");
-        lore.add("&f" + memberCount + " &7members, " + ownerName);
-        lore.add("&7Created " + createdAt);
+        lore.add("&f" + memberCount + " &7members");
+        lore.add("&7Leader: &f" + ownerName);
+        lore.add("&7Created: &f" + createdAt);
         lore.add("");
         lore.add("&7Kills: &f" + kills + "&7, Deaths: &f" + deaths + "&7, Ratio: &f" + String.format("%.1f", kdr));
         lore.add("&7Wins: &f" + wins + "&7, Loses: &f" + loses + "&7, Ratio: &f" + String.format("%.1f", wlr));
@@ -821,13 +827,19 @@ public class GuiUtils {
      * @param p_kill the player's current
      * @param p_deaths the player's current
      * @param p_kdr the player's current
+     * @param rep the player's current
+     * @param seenDate the player's current
      * @param sortIndex the index used to re-open gui with prior sort
      */
-    public static void addGuiItemPlayer(PaginatedGui gui, Player sender, UUID targetUUID, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, double p_elo, int p_kills, int p_deaths, double p_kdr, int sortIndex) {
+    public static void addGuiItemPlayer(PaginatedGui gui, Player sender, UUID targetUUID, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, double p_elo, int p_kills, int p_deaths, double p_kdr, double rep, Date seenDate, int sortIndex) {
         meta.setLore(null);
         lore.add("&8-----------------------");
         lore.add("&7Gang Rank: &f" + GANG_RANKS[rank-1]);
         lore.add("&7Elo: &f"+p_elo);
+        if (rep>=0) lore.add("&7Rep: &f"+String.format("%.1f", rep));
+        else lore.add("&7Rep: &f5.0");
+        if (seenDate!=null) lore.add("&7Seen: &f"+seenDate.toString());
+        else lore.add("&7Seen: &flong ago");
 
         lore.add("");
         lore.add("           &7&oPVP Only");
@@ -849,7 +861,6 @@ public class GuiUtils {
                 lore.add("&6Shift-Right-Click to demote to " + GANG_RANKS[rank-2]);
             }
         }
-        
 
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
@@ -876,11 +887,15 @@ public class GuiUtils {
         gui.disableOtherActions();
     }
 
-    public static void setGuiItemMngPlayerDisplay(Gui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, double p_elo, int p_kills, int p_deaths, double p_kdr) {
+    public static void setGuiItemMngPlayerDisplay(Gui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, double p_elo, int p_kills, int p_deaths, double p_kdr, double rep, Date seenDate) {
         meta.setLore(null);
         lore.add("&8-----------------------");
         lore.add("&7Gang Rank: &f" + GANG_RANKS[rank-1]);
         lore.add("&7Elo: &f"+p_elo);
+        if (rep>=0) lore.add("&7Rep: &f"+String.format("%.1f", rep));
+        else lore.add("&7Rep: &f5.0");
+        if (seenDate!=null) lore.add("&7Seen: &f"+seenDate.toString());
+        else lore.add("&7Seen: &flong ago");
 
         lore.add("");
         lore.add("           &7&oPVP Only");

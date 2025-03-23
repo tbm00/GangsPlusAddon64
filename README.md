@@ -11,6 +11,7 @@ Created by tbm00 for play.mc64.wtf.
 - **GangsPlus**: REQUIRED
 - **PVPStats**: REQUIRED
 - **Rep64**: REQUIRED
+- **Logger64**: REQUIRED
 
 
 ## Commands
@@ -32,7 +33,7 @@ Created by tbm00 for play.mc64.wtf.
 
 ## Config
 ```
-# GangsPlusAddon64 v0.0.3-beta by @tbm00
+# GangsPlusAddon64 v0.0.4-beta by @tbm00
 # https://github.com/tbm00/GangsPlusAddon64
 
 enabled: true

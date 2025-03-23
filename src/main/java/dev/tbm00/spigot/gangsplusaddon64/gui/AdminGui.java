@@ -83,7 +83,7 @@ public class AdminGui {
                 int level = gang.getLevel();
                 int memberCount = gang.getAllMembersCount();
                 String ownerName = gang.getOwnerName();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy, HH:mm");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String createdAt = dateFormat.format(gang.getCreatedAt());
                 
                 int wins = gang.getFightsWon();

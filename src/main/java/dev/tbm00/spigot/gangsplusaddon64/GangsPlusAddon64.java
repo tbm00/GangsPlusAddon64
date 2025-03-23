@@ -10,6 +10,7 @@ import net.brcdev.gangs.GangsPlugin;
 import net.slipcor.pvpstats.PVPStats;
 
 import dev.tbm00.spigot.rep64.Rep64;
+import dev.tbm00.spigot.logger64.Logger64;
 
 import dev.tbm00.spigot.gangsplusaddon64.utils.*;
 import dev.tbm00.spigot.gangsplusaddon64.command.*;
@@ -19,6 +20,7 @@ public class GangsPlusAddon64 extends JavaPlugin {
     private ConfigHandler configHandler;
     public static GangsPlugin gangHook;
     public static Rep64 repHook;
+    public static Logger64 logHook;
     public static PVPStats pvpHook;
 
     @Override
@@ -79,6 +81,12 @@ public class GangsPlusAddon64 extends JavaPlugin {
             disablePlugin();
             return;
         }
+
+        if (!setupLogger64()) {
+            getLogger().severe("Logger64 hook failed -- disabling plugin!");
+            disablePlugin();
+            return;
+        }
     }
 
     /**
@@ -129,6 +137,23 @@ public class GangsPlusAddon64 extends JavaPlugin {
         else return false;
 
         Utils.log(ChatColor.GREEN, "Rep64 hooked.");
+        return true;
+    }
+
+    /**
+     * Attempts to hook into the Logger64 plugin.
+     *
+     * @return true if the hook was successful, false otherwise.
+     */
+    private boolean setupLogger64() {
+        if (!isPluginAvailable("Logger64")) return false;
+
+        Plugin logger64 = Bukkit.getPluginManager().getPlugin("Logger64");
+        if (logger64.isEnabled() && logger64 instanceof Logger64)
+            logHook = (Logger64) logger64;
+        else return false;
+
+        Utils.log(ChatColor.GREEN, "Logger64 hooked.");
         return true;
     }
 

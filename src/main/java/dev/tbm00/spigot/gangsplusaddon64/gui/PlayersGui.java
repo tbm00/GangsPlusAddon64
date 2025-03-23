@@ -3,6 +3,7 @@ package dev.tbm00.spigot.gangsplusaddon64.gui;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.sql.Date;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -108,7 +109,10 @@ public class PlayersGui {
                 e.printStackTrace();
             }
 
-            GuiUtils.addGuiItemPlayer(gui, sender, player.getUniqueId(), gang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_kills, p_deaths, p_kdr, currentSortIndex);
+            Date seen = GangsPlusAddon64.logHook.getLogManager().getLastSeen(name);
+            double rep = GangsPlusAddon64.repHook.getRepManager().getRepShown(player.getUniqueId().toString());
+
+            GuiUtils.addGuiItemPlayer(gui, sender, player.getUniqueId(), gang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_kills, p_deaths, p_kdr, rep, seen, currentSortIndex);
         }
     }
 

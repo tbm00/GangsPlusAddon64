@@ -1,5 +1,6 @@
 package dev.tbm00.spigot.gangsplusaddon64.gui;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -160,7 +161,7 @@ public class ManageGui {
         int level = givenGang.getLevel();
         int memberCount = givenGang.getAllMembersCount();
         String ownerName = givenGang.getOwnerName();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy, HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String createdAt = dateFormat.format(givenGang.getCreatedAt());
         
         int wins = givenGang.getFightsWon();
@@ -209,7 +210,10 @@ public class ManageGui {
             e.printStackTrace();
         }
 
-        GuiUtils.setGuiItemMngPlayerDisplay(gui, player, givenGang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_kills, p_deaths, p_kdr);
+        Date seen = GangsPlusAddon64.logHook.getLogManager().getLastSeen(name);
+        double rep = GangsPlusAddon64.repHook.getRepManager().getRepShown(player.getUniqueId().toString());
+
+        GuiUtils.setGuiItemMngPlayerDisplay(gui, player, givenGang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_kills, p_deaths, p_kdr, rep, seen);
     }
 
     /**
