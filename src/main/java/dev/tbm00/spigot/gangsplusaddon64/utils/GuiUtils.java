@@ -74,6 +74,18 @@ public class GuiUtils {
         new PlayersGui(javaPlugin, gang, (Player) event.getWhoClicked(), type);
     }
 
+
+    /**
+     * Handles the event when sort players button is clicked.
+     * 
+     * @param event the inventory click event
+     */
+    public static void handleMainMenuClick(InventoryClickEvent event) {
+        event.setCancelled(true);
+        Utils.sudoCommand(event.getWhoClicked(), "commandpanel menu");
+    }
+
+    
     /**
      * Handles the event when sort players button is clicked.
      * 
@@ -335,6 +347,32 @@ public class GuiUtils {
      * @param item holder for current item
      * @param meta holder for current item's meta
      * @param lore holder for current item's lore
+     */
+    public static void setGuiItemMainMenu(PaginatedGui gui, ItemStack item, ItemMeta meta, List<String> lore) {
+        lore.clear();
+        meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fGo to Main Menu"));
+        item.setItemMeta(meta);
+        item.setType(Material.STONE_BUTTON);
+        gui.setItem(6, 9, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleMainMenuClick(event)));
+        lore.clear();
+    } public static void setGuiItemMainMenu(Gui gui, ItemStack item, ItemMeta meta, List<String> lore) {
+        lore.clear();
+        meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fGo to Main Menu"));
+        item.setItemMeta(meta);
+        item.setType(Material.STONE_BUTTON);
+        gui.setItem(6, 9, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleMainMenuClick(event)));
+        lore.clear();
+    }
+
+    /**
+     * Sets the gang GUI's footer's sort button format.
+     *
+     * @param gui the gui that will be sent to the player
+     * @param item holder for current item
+     * @param meta holder for current item's meta
+     * @param lore holder for current item's lore
      * @param type integer of the sort alg
      */
     public static void setGuiItemSortGangs(PaginatedGui gui, ItemStack item, ItemMeta meta, List<String> lore, int type) {
@@ -347,7 +385,7 @@ public class GuiUtils {
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fSort Gangs"));
         item.setItemMeta(meta);
         item.setType(Material.HOPPER);
-        gui.setItem(6, 9, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortGangsClick(event, next)));
+        gui.setItem(6, 8, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortGangsClick(event, next)));
         lore.clear();
     }
 
@@ -370,7 +408,7 @@ public class GuiUtils {
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fSort Gangs"));
         item.setItemMeta(meta);
         item.setType(Material.HOPPER);
-        gui.setItem(6, 9, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortGangsAdminClick(event, next)));
+        gui.setItem(6, 8, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortGangsAdminClick(event, next)));
         lore.clear();
     }
 
@@ -394,7 +432,7 @@ public class GuiUtils {
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fSort Players"));
         item.setItemMeta(meta);
         item.setType(Material.HOPPER);
-        gui.setItem(6, 9, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortPlayersClick(event, next, gang)));
+        gui.setItem(6, 8, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortPlayersClick(event, next, gang)));
         lore.clear();
     }
 
@@ -417,7 +455,7 @@ public class GuiUtils {
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fSort Allied Gangs"));
         item.setItemMeta(meta);
         item.setType(Material.HOPPER);
-        gui.setItem(6, 9, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortAlliesClick(event, next, gang)));
+        gui.setItem(6, 8, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleSortAlliesClick(event, next, gang)));
         lore.clear();
     }
 
@@ -437,7 +475,7 @@ public class GuiUtils {
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fPrevious Page"));
         item.setItemMeta(meta);
         item.setType(Material.STONE_BUTTON);
-        gui.setItem(6, 7, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handlePageClick(event, gui, false, label)));
+        gui.setItem(6, 6, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handlePageClick(event, gui, false, label)));
         lore.clear();
     }
 
@@ -457,7 +495,7 @@ public class GuiUtils {
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fNext Page"));
         item.setItemMeta(meta);
         item.setType(Material.STONE_BUTTON);
-        gui.setItem(6, 8, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handlePageClick(event, gui, true, label)));
+        gui.setItem(6, 7, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handlePageClick(event, gui, true, label)));
         lore.clear();
     }
 
@@ -601,7 +639,7 @@ public class GuiUtils {
         item.setItemMeta(meta);
         item.setAmount(1);
 
-        gui.setItem(6, 6, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
+        gui.setItem(6, 4, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
     }
 
     /**

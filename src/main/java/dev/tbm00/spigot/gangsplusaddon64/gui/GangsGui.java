@@ -138,18 +138,18 @@ public class GangsGui {
         gui.setItem(6, 5, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
         lore.clear();
 
-        // 6 - empty
-        gui.setItem(6, 6, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
-        
-        // 7 - previous
+        // 6 - previous
         if (gui.getPagesNum()>=2) GuiUtils.setGuiItemPageBack(gui, item, meta, lore, label);
         else gui.setItem(6, 7, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
 
-        // 8 - next
+        // 7 - next
         if (gui.getPagesNum()>=2) GuiUtils.setGuiItemPageNext(gui, item, meta, lore, label);
         else gui.setItem(6, 8, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
 
-        // 9 - sort
+        // 8 - sort
         GuiUtils.setGuiItemSortGangs(gui, item, meta, lore, currentSortIndex);
+
+        // 9 - main menu
+        GuiUtils.setGuiItemMainMenu(gui, item, meta, lore);
     }
 }

@@ -158,24 +158,24 @@ public class PlayersGui {
             }
         } else gui.setItem(6, 3, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         
-        // 4 - empty
-        gui.setItem(6, 4, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+        // 4 - currently viewing gang
+        GuiUtils.setGuiItemCurrGangDisplay(gui, gang, sender);
 
         // 5 - All Gangs
         GuiUtils.setGuiItemAllGangs(gui, item, meta, lore);
 
-        // 6 - currently viewing gang
-        GuiUtils.setGuiItemCurrGangDisplay(gui, gang, sender);
-
-        // 7 - previous
+        // 6 - previous
         if (gui.getPagesNum()>=2) GuiUtils.setGuiItemPageBack(gui, item, meta, lore, label);
+        else gui.setItem(6, 6, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
+
+        // 7 - next
+        if (gui.getPagesNum()>=2) GuiUtils.setGuiItemPageNext(gui, item, meta, lore, label);
         else gui.setItem(6, 7, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
 
-        // 8 - next
-        if (gui.getPagesNum()>=2) GuiUtils.setGuiItemPageNext(gui, item, meta, lore, label);
-        else gui.setItem(6, 8, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
-
-        // 9 - sort
+        // 8 - sort
         GuiUtils.setGuiItemSortPlayers(gui, item, meta, lore, currentSortIndex, gang);
+
+        // 9 - main menu
+        GuiUtils.setGuiItemMainMenu(gui, item, meta, lore);
     }
 }
