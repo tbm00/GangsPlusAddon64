@@ -54,7 +54,7 @@ public class PermsGui {
         clearMetaJunk(meta);
         item.setItemMeta(meta);
         item.setType(Material.STONE_SWORD);
-        gui.setItem(3, 2, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleManageMenuClick(event, givenGang)));
+        gui.setItem(3, 2, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
         lore.clear();
 
         lore.add("&8-----------------------");
@@ -65,7 +65,7 @@ public class PermsGui {
         clearMetaJunk(meta);
         item.setItemMeta(meta);
         item.setType(Material.IRON_SWORD);
-        gui.setItem(3, 4, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleManageMenuClick(event, givenGang)));
+        gui.setItem(3, 4, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
         lore.clear();
 
         lore.add("&8-----------------------");
@@ -79,7 +79,7 @@ public class PermsGui {
         clearMetaJunk(meta);
         item.setItemMeta(meta);
         item.setType(Material.DIAMOND_SWORD);
-        gui.setItem(3, 6, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleManageMenuClick(event, givenGang)));
+        gui.setItem(3, 6, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
         lore.clear();
 
         lore.add("&8-----------------------");
@@ -92,7 +92,7 @@ public class PermsGui {
         clearMetaJunk(meta);
         item.setItemMeta(meta);
         item.setType(Material.NETHERITE_SWORD);
-        gui.setItem(3, 8, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleManageMenuClick(event, givenGang)));
+        gui.setItem(3, 8, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
         lore.clear();
 
         gui.setItem(6, 1, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
