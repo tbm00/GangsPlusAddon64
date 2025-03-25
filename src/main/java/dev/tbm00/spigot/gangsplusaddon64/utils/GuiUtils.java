@@ -341,7 +341,7 @@ public class GuiUtils {
     }
 
     /**
-     * Sets the gang GUI's footer's sort button format.
+     * Sets the GUI's footer's main menu button format.
      *
      * @param gui the gui that will be sent to the player
      * @param item holder for current item
