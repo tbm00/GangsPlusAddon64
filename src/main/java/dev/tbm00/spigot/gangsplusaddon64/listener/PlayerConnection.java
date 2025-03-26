@@ -32,7 +32,7 @@ public class PlayerConnection implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (GangsPlusAddon64.gangHook.getGangManager().isInGang(event.getPlayer())) {
             UUID uuid = event.getPlayer().getUniqueId();
-            long currentTime = javaPlugin.getServer().getWorld("Tadow").getFullTime()/24000;
+            long currentTime = javaPlugin.getServer().getWorld("Tadow").getFullTime()/72000;
             if (Utils.headMetaCache.containsKey(uuid) && Utils.headMetaCache.get(uuid).getRight()>=currentTime) {
                 return;
             }

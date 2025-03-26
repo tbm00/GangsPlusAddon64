@@ -2,8 +2,10 @@ package dev.tbm00.spigot.gangsplusaddon64.utils;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -201,6 +203,7 @@ public class Utils {
 
     //old: private static final Map<UUID, SkullMeta> headMetaCache = new HashMap<>();
     public static final Map<UUID, Pair<SkullMeta, Long>> headMetaCache = new HashMap<>();
+    private static final Set<UUID> refreshInProgress = new HashSet<>();
 
     /**
      * Adds skin texture to head meta.
@@ -212,48 +215,41 @@ public class Utils {
      * @param player the player whose head we want
      */
     public static void applyHeadTexture(ItemStack head, OfflinePlayer player) {
-        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
         UUID uuid = player.getUniqueId();
-        boolean addToCache=false;
         long currentTime=0;
-
+        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+        Pair<SkullMeta, Long> entry = headMetaCache.get(uuid);
+        boolean needRefresh = false;
+        
         if (player.isOnline() && player instanceof Player) {
-            currentTime = javaPlugin.getServer().getWorld("Tadow").getFullTime()/24000;
-            if (headMetaCache.containsKey(uuid) && headMetaCache.get(uuid).getRight()<currentTime) {
-                addToCache = true;
-            } else if (!headMetaCache.containsKey(uuid)) addToCache = true;
+            currentTime = javaPlugin.getServer().getWorld("Tadow").getFullTime()/72000;
 
-            headMeta.setOwningPlayer((Player) player);
-            head.setItemMeta(headMeta);
-        } else if (headMetaCache.containsKey(uuid)) {
-            head.setItemMeta(headMetaCache.get(uuid).getLeft().clone());
+            if (entry!=null && (entry.getRight()<currentTime || 
+            (entry.getLeft().getOwningPlayer()==null || !entry.getLeft().getOwningPlayer().hasPlayedBefore())))
+                needRefresh = true;
+            else if (entry==null) needRefresh = true;
+        }
+
+        if (entry!=null && !needRefresh) {
+            head.setItemMeta(entry.getLeft().clone());
         } else {
             headMeta.setOwningPlayer(player);
             head.setItemMeta(headMeta);
-            addToCache = true;
+            needRefresh = true;
         }
 
-        if (!addToCache) return;
-        
+        if (!needRefresh || refreshInProgress.contains(uuid)) return;
+
+        refreshInProgress.add(uuid);
         final long updateTime = currentTime;
+
         // Delay to allow the server to apply the skin texture
         Bukkit.getScheduler().runTaskLater(javaPlugin, () -> {
-            // Retrieve the updated SkullMeta from the ItemStack
-            SkullMeta updatedMeta = (SkullMeta) head.getItemMeta();
-
-            if (updatedMeta==null || 
-                (updatedMeta.getOwningPlayer() != null && !updatedMeta.getOwningPlayer().hasPlayedBefore())) {
-                ItemStack blankHead = new ItemStack(Material.PLAYER_HEAD);
-                SkullMeta blankMeta = (SkullMeta) blankHead.getItemMeta();
-                
-                blankMeta.setOwningPlayer(null);
-                headMetaCache.put(uuid, Pair.of(blankMeta, updateTime));
-
-                Player online = javaPlugin.getServer().getPlayer(uuid);
-                String name = (online != null) ? online.getName() : uuid.toString();
-                log(ChatColor.RED, "Cached blank SkullMeta for " + name);
-            } else {
+            try {
+                SkullMeta updatedMeta = (SkullMeta) head.getItemMeta();
                 headMetaCache.put(uuid, Pair.of(updatedMeta, updateTime));
+            } finally {
+                refreshInProgress.remove(uuid);
             }
         }, 20L);
     }
