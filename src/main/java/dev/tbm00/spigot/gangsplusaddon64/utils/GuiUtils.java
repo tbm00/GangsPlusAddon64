@@ -59,7 +59,7 @@ public class GuiUtils {
     public static void handleSortGangsAdminClick(InventoryClickEvent event, int type) {
         event.setCancelled(true);
         List<Gang> gangs = GangsPlusAddon64.gangHook.getGangManager().getAllGangs();
-        new AdminGui(javaPlugin, gangs, (Player) event.getWhoClicked(), type);
+        new GangsAdminGui(javaPlugin, gangs, (Player) event.getWhoClicked(), type);
     }
 
     /**
@@ -96,7 +96,7 @@ public class GuiUtils {
     public static void handleSortAlliesClick(InventoryClickEvent event, int type, Gang gang) {
         event.setCancelled(true);
         List<Gang> gangs = GangsPlusAddon64.gangHook.getGangManager().getAllGangs();
-        new AlliesGui(javaPlugin, gangs, (Player) event.getWhoClicked(), type);
+        new GangsAlliesGui(javaPlugin, gangs, (Player) event.getWhoClicked(), type);
     }
 
     /**
@@ -237,7 +237,7 @@ public class GuiUtils {
     public static void handleAllyMenuClick(InventoryClickEvent event, Gang gang) {
         event.setCancelled(true);
         List<Gang> gangs = GangsPlusAddon64.gangHook.getGangManager().getAllGangs();
-        new AlliesGui(javaPlugin, gangs, (Player) event.getWhoClicked(), 0);
+        new GangsAlliesGui(javaPlugin, gangs, (Player) event.getWhoClicked(), 0);
     }
 
     /**
@@ -259,7 +259,7 @@ public class GuiUtils {
      */
     public static void handleAllyAddClick(InventoryClickEvent event, Gang gang) {
         event.setCancelled(true);
-        new AnvilGui(javaPlugin, (Player) event.getWhoClicked(), "Ally with Gang", "g ally ", "enter gang", Material.POPPY);
+        new SearchGui(javaPlugin, (Player) event.getWhoClicked(), "Ally with Gang", "g ally ", "enter gang", Material.POPPY);
     }
 
     /**
@@ -295,7 +295,7 @@ public class GuiUtils {
      */
     public static void handleDepositClick(InventoryClickEvent event, Gang gang) {
         event.setCancelled(true);
-        new AnvilGui(javaPlugin, (Player) event.getWhoClicked(), "Deposit $ to Gang Bank", "g deposit ", "enter amount", Material.GOLD_INGOT);
+        new SearchGui(javaPlugin, (Player) event.getWhoClicked(), "Deposit $ to Gang Bank", "g deposit ", "enter amount", Material.GOLD_INGOT);
     }
 
     /**

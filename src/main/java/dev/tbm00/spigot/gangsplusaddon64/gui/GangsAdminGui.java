@@ -20,7 +20,7 @@ import net.brcdev.gangs.gang.Gang;
 import dev.tbm00.spigot.gangsplusaddon64.GangsPlusAddon64;
 import dev.tbm00.spigot.gangsplusaddon64.utils.*;
 
-public class AdminGui {
+public class GangsAdminGui {
     GangsPlusAddon64 javaPlugin;
     PaginatedGui gui;
     String label;
@@ -28,7 +28,7 @@ public class AdminGui {
     List<Gang> gangMap;
     int currentSortIndex = 0;
     
-    public AdminGui(GangsPlusAddon64 javaPlugin, List<Gang> gangs, Player player, int sortIndex) {
+    public GangsAdminGui(GangsPlusAddon64 javaPlugin, List<Gang> gangs, Player player, int sortIndex) {
         this.player = player;
         this.javaPlugin = javaPlugin;
         this.gangMap = new ArrayList<>(gangs);

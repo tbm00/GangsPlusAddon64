@@ -13,12 +13,12 @@ import net.wesjd.anvilgui.AnvilGUI;
 import dev.tbm00.spigot.gangsplusaddon64.GangsPlusAddon64;
 import dev.tbm00.spigot.gangsplusaddon64.utils.Utils;
 
-public class AnvilGui {
+public class SearchGui {
     
     /**
      * Creates an anvil gui for player to enter text and search shops with.
      */
-    public AnvilGui(GangsPlusAddon64 javaPlugin, Player player, String title, String command, String defaultText, Material outputMat) {
+    public SearchGui(GangsPlusAddon64 javaPlugin, Player player, String title, String command, String defaultText, Material outputMat) {
         ItemStack leftItem = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
         ItemMeta leftMeta = leftItem.getItemMeta();
         leftMeta.setDisplayName(" ");

@@ -37,7 +37,7 @@ public class GangUtils {
      * @return true after creating gui instance
      */
     public static boolean handleAdminGuiCmd(Player player) {
-        new AdminGui(javaPlugin, GangsPlusAddon64.gangHook.getGangManager().getAllGangs(), player, 1);
+        new GangsAdminGui(javaPlugin, GangsPlusAddon64.gangHook.getGangManager().getAllGangs(), player, 1);
         return true;
     }
 
