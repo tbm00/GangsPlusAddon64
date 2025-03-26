@@ -104,7 +104,8 @@ public class ManageGui {
         gui.setItem(6, 7, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         gui.setItem(6, 8, ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).setName(" ").asGuiItem(event -> event.setCancelled(true)));
         
-        GuiUtils.setGuiItemAllGangs(gui, item, meta, lore);
+        // 9 - main menu
+        GuiUtils.setGuiItemMainMenu(gui, item, meta, lore);
     }
 
     /**
