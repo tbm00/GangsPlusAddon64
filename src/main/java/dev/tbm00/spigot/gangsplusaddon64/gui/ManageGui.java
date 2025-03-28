@@ -18,6 +18,7 @@ import dev.triumphteam.gui.guis.Gui;
 
 import net.brcdev.gangs.gang.Gang;
 import net.brcdev.gangs.player.PlayerData;
+import net.slipcor.pvpstats.api.PlayerStatisticsBuffer;
 
 import dev.tbm00.spigot.gangsplusaddon64.GangsPlusAddon64;
 import dev.tbm00.spigot.gangsplusaddon64.utils.*;
@@ -201,13 +202,15 @@ public class ManageGui {
             g_kdr = data.getKdRatio();
         } catch (Exception e) {}
 
-        int p_kills=0, p_deaths=0;
-        double p_kdr=0, p_elo=0;
+        int p_kills=0, p_deaths=0, p_elo=0;
+        double p_kdr=0;
+        Character p_rating = 'X';
         try {
             p_elo = Utils.getPvpStat("elo", player);
             p_kills = Utils.getPvpStat("kills", player);
             p_deaths = Utils.getPvpStat("deaths", player);
             p_kdr = (p_deaths > 0) ? ((double) p_kills / p_deaths) : 0;
+            p_rating = PlayerStatisticsBuffer.getRating(p_elo);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -215,7 +218,7 @@ public class ManageGui {
         Date seen = GangsPlusAddon64.logHook.getLogManager().getLastSeen(name);
         double rep = GangsPlusAddon64.repHook.getRepManager().getRepShown(player.getUniqueId().toString());
 
-        GuiUtils.setGuiItemMngPlayerDisplay(gui, player, givenGang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_kills, p_deaths, p_kdr, rep, seen);
+        GuiUtils.setGuiItemMngPlayerDisplay(gui, player, givenGang, head, headMeta, lore, name, rank, g_kills, g_deaths, g_kdr, p_elo, p_rating, p_kills, p_deaths, p_kdr, rep, seen);
     }
 
     /**

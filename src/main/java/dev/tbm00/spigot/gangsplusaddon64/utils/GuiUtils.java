@@ -869,11 +869,11 @@ public class GuiUtils {
      * @param seenDate the player's current
      * @param sortIndex the index used to re-open gui with prior sort
      */
-    public static void addGuiItemPlayer(PaginatedGui gui, Player sender, UUID targetUUID, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, double p_elo, int p_kills, int p_deaths, double p_kdr, double rep, Date seenDate, int sortIndex) {
+    public static void addGuiItemPlayer(PaginatedGui gui, Player sender, UUID targetUUID, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, int p_elo, Character p_rating, int p_kills, int p_deaths, double p_kdr, double rep, Date seenDate, int sortIndex) {
         meta.setLore(null);
         lore.add("&8-----------------------");
         lore.add("&7Gang Rank: &f" + GANG_RANKS[rank-1]);
-        lore.add("&7Elo: &f"+p_elo);
+        lore.add("&7PVP Rating: &f"+p_rating+" ("+p_elo+" elo)");
         if (rep>=0) lore.add("&7Rep: &f"+String.format("%.1f", rep));
         else lore.add("&7Rep: &f5.0");
         if (seenDate!=null) lore.add("&7Seen: &f"+seenDate.toString());
@@ -925,11 +925,11 @@ public class GuiUtils {
         gui.disableOtherActions();
     }
 
-    public static void setGuiItemMngPlayerDisplay(Gui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, double p_elo, int p_kills, int p_deaths, double p_kdr, double rep, Date seenDate) {
+    public static void setGuiItemMngPlayerDisplay(Gui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int rank, int g_kills, int g_deaths, double g_kdr, int p_elo, Character p_rating, int p_kills, int p_deaths, double p_kdr, double rep, Date seenDate) {
         meta.setLore(null);
         lore.add("&8-----------------------");
         lore.add("&7Gang Rank: &f" + GANG_RANKS[rank-1]);
-        lore.add("&7Elo: &f"+p_elo);
+        lore.add("&7PVP Rating: &f"+p_rating+" ("+p_elo+" elo)");
         if (rep>=0) lore.add("&7Rep: &f"+String.format("%.1f", rep));
         else lore.add("&7Rep: &f5.0");
         if (seenDate!=null) lore.add("&7Seen: &f"+seenDate.toString());
