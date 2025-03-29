@@ -326,7 +326,7 @@ public class GuiUtils {
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dAll Gangs"));
         item.setItemMeta(meta);
-        item.setType(Material.BOOK);
+        item.setType(Material.CHEST);
         gui.setItem(6, 5, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleAllClick(event, (Player) event.getWhoClicked())));
         lore.clear();
     } public static void setGuiItemAllGangs(PaginatedGui gui, ItemStack item, ItemMeta meta, List<String> lore) {
@@ -335,7 +335,7 @@ public class GuiUtils {
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dAll Gangs"));
         item.setItemMeta(meta);
-        item.setType(Material.BOOK);
+        item.setType(Material.CHEST);
         gui.setItem(6, 5, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleAllClick(event, (Player) event.getWhoClicked())));
         lore.clear();
     }
@@ -576,7 +576,7 @@ public class GuiUtils {
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dGang Management"));
         item.setItemMeta(meta);
-        item.setType(Material.CHEST);
+        item.setType(Material.ENDER_CHEST);
         gui.setItem(6, 1, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleManageMenuClick(event, gang)));
         lore.clear();
     } public static void setGuiItemMyManage(PaginatedGui gui, ItemStack item, ItemMeta meta, List<String> lore, Gang gang) {
@@ -585,7 +585,7 @@ public class GuiUtils {
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dGang Management"));
         item.setItemMeta(meta);
-        item.setType(Material.CHEST);
+        item.setType(Material.ENDER_CHEST);
         gui.setItem(6, 1, ItemBuilder.from(item).asGuiItem(event -> GuiUtils.handleManageMenuClick(event, gang)));
         lore.clear();
     }
