@@ -134,7 +134,7 @@ public class GangsGui {
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dAll Gangs"));
         item.setItemMeta(meta);
-        item.setType(Material.BOOK);
+        item.setType(Material.CHEST);
         gui.setItem(6, 5, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
         lore.clear();
 

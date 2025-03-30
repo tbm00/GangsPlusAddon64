@@ -78,7 +78,7 @@ public class ManageGui {
         lore.add("&eCurrently viewing gang management GUI");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dGang Management"));
-        item.setType(Material.CHEST);
+        item.setType(Material.ENDER_CHEST);
         item.setItemMeta(meta);
         gui.setItem(6, 1, ItemBuilder.from(item).asGuiItem(event -> {event.setCancelled(true);}));
         lore.clear();
