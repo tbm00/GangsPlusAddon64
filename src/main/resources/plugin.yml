@@ -4,7 +4,7 @@ description: ${project.description}
 author: tbm00
 main: dev.tbm00.spigot.gangsplusaddon64.GangsPlusAddon64
 api-version: 1.17
-depend: [GangsPlus, Rep64, Logger64]
+depend: [GangsPlus, Rep64, Logger64, pvpstats]
 commands:
   gangs:
     description: Main command for GangsPlusAddon64

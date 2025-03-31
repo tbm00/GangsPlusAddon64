@@ -216,41 +216,43 @@ public class Utils {
      */
     public static void applyHeadTexture(ItemStack head, OfflinePlayer player) {
         UUID uuid = player.getUniqueId();
-        long currentTime=0;
         SkullMeta headMeta = (SkullMeta) head.getItemMeta();
         Pair<SkullMeta, Long> entry = headMetaCache.get(uuid);
-        boolean needRefresh = false;
-        
-        if (player.isOnline() && player instanceof Player) {
-            currentTime = javaPlugin.getServer().getWorld("Tadow").getFullTime()/72000;
 
-            if (entry!=null && (entry.getRight()<currentTime || 
-            (entry.getLeft().getOwningPlayer()==null || !entry.getLeft().getOwningPlayer().hasPlayedBefore())))
-                needRefresh = true;
-            else if (entry==null) needRefresh = true;
-        }
-
-        if (entry!=null && !needRefresh) {
+        if (isCacheValid(player, entry)) {
             head.setItemMeta(entry.getLeft().clone());
-        } else {
-            headMeta.setOwningPlayer(player);
-            head.setItemMeta(headMeta);
-            needRefresh = true;
+            return;
         }
+        
+        headMeta.setOwningPlayer(player);
+        head.setItemMeta(headMeta);
 
-        if (!needRefresh || refreshInProgress.contains(uuid)) return;
-
-        refreshInProgress.add(uuid);
-        final long updateTime = currentTime;
-
+        if (refreshInProgress.contains(uuid)) return;
+        else refreshInProgress.add(uuid);
+        
         // Delay to allow the server to apply the skin texture
         Bukkit.getScheduler().runTaskLater(javaPlugin, () -> {
             try {
                 SkullMeta updatedMeta = (SkullMeta) head.getItemMeta();
-                headMetaCache.put(uuid, Pair.of(updatedMeta, updateTime));
+                headMetaCache.put(uuid, Pair.of(updatedMeta, System.currentTimeMillis()));
             } finally {
                 refreshInProgress.remove(uuid);
             }
         }, 20L);
+    }
+
+    private static boolean isCacheValid(OfflinePlayer player, Pair<SkullMeta, Long> entry) {
+        if (entry==null) {
+            return false;
+        }
+        
+        if (player.isOnline() && player instanceof Player) {
+            long currentTime = System.currentTimeMillis();
+            if ((currentTime - entry.getRight()) >= 3600000) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
