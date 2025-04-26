@@ -101,7 +101,6 @@ public class Utils {
      * @return true if the sender has the permission, false otherwise
      */
     public static boolean hasPermission(CommandSender sender, String perm) {
-        if (sender instanceof Player && ((Player)sender).getGameMode()==GameMode.CREATIVE) return false;
         return sender.hasPermission(perm) || sender instanceof ConsoleCommandSender;
     }
 
