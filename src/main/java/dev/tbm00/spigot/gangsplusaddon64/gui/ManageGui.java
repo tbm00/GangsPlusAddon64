@@ -332,19 +332,19 @@ public class ManageGui {
         switch (givenGang.getLevel()) {
             case 1:
                 lore.add("&6Click to level up your gang");
-                lore.add("&6for &a$2,000,000");
+                lore.add("&6for &a$200,000");
                 break;
             case 2:
                 lore.add("&6Click to level up your gang");
-                lore.add("&6for &a$20,00,000");
+                lore.add("&6for &a$2,00,000");
                 break;
             case 3:
                 lore.add("&6Click to level up your gang");
-                lore.add("&6for &a$200,000,000");
+                lore.add("&6for &a$20,000,000");
                 break;
             case 4:
                 lore.add("&6Click to level up your gang");
-                lore.add("&6for &a$2,000,000,000");
+                lore.add("&6for &a$200,000,000");
                 break;
             case 5:
                 lore.add("&cGang is at max level!");
