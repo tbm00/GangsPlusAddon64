@@ -107,7 +107,7 @@ public class PlayersGui {
                 p_kills = Utils.getPvpStat("kills", player);
                 p_deaths = Utils.getPvpStat("deaths", player);
                 p_kdr = (p_deaths > 0) ? ((double) p_kills / p_deaths) : 0;
-                p_rating = PlayerStatisticsBuffer.getRating(p_elo);
+                p_rating = PlayerStatisticsBuffer.getRatingByElo(p_elo);
             } catch (Exception e) {
                 e.printStackTrace();
             }

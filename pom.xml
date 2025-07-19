@@ -6,7 +6,7 @@
 
     <groupId>dev.tbm00</groupId>
     <artifactId>GangsPlusAddon64</artifactId>
-    <version>0.0.4-beta</version>
+    <version>0.0.5-beta</version>
     <packaging>jar</packaging>
 
     <name>GangsPlusAddon64</name>
@@ -117,7 +117,7 @@
             <artifactId>pvpstats</artifactId>
             <version>1.11</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/depend/PVPStats-1_11_60-MC64-2.jar</systemPath>
+            <systemPath>${project.basedir}/depend/PVPStats-1_11_60-MC64-4.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>dev.tbm00</groupId>
