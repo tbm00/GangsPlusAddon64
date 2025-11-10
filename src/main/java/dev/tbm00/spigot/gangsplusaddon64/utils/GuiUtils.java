@@ -30,7 +30,7 @@ import dev.tbm00.spigot.gangsplusaddon64.gui.*;
 public class GuiUtils {
     private static GangsPlusAddon64 javaPlugin;
     public static final List<String> pendingTeleports = new CopyOnWriteArrayList<>();
-    public final static String[] GANG_SORT_TYPES = {"Member Count", "Age", "KDR", "Kills", "Deaths", "Fight WLR", "Fight Wins", "Fight Loses"};
+    public final static String[] GANG_SORT_TYPES = {"Member Count", "Age", "KDR", "Kills", "Deaths", "Fight WLR", "Fight Wins", "Fight Loses", "Balance"};
     public final static String[] PLAYER_SORT_TYPES = {"Gang Rank", "Elo Score", "PVP Kills", "PVP Deaths"};
     public final static String[] GANG_RANKS = {"Thug", "Gangstar", "Capo", "Kingpin"};
 
@@ -399,7 +399,7 @@ public class GuiUtils {
      * @param type integer of the sort alg
      */
     public static void setGuiItemSortGangsAdmin(PaginatedGui gui, ItemStack item, ItemMeta meta, List<String> lore, int type) {
-        int next = (type==7) ? 0 : type+1;
+        int next = (type==8) ? 0 : type+1;
 
         lore.add("&8-----------------------");
         lore.add("&6Click to change sort order");
@@ -762,8 +762,9 @@ public class GuiUtils {
      * @param kill the gang's current
      * @param deaths the gang's current
      * @param kdr the gang's current
+     * @param balance the gangs current
      */
-    public static void addGuiItemGangAdmin(PaginatedGui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int level, int memberCount, String ownerName, String createdAt, int wins, int loses, double wlr, int kills, int deaths, double kdr) {
+    public static void addGuiItemGangAdmin(PaginatedGui gui, Player sender, Gang gang, ItemStack item, ItemMeta meta, List<String> lore, String name, int level, int memberCount, String ownerName, String createdAt, int wins, int loses, double wlr, int kills, int deaths, double kdr, double balance) {
         meta.setLore(null);
         lore.add("&8-----------------------");
         lore.add("&f" + memberCount + " &7members");
@@ -772,6 +773,8 @@ public class GuiUtils {
         lore.add("");
         lore.add("&7Kills: &f" + kills + "&7, Deaths: &f" + deaths + "&7, Ratio: &f" + String.format("%.1f", kdr));
         lore.add("&7Wins: &f" + wins + "&7, Loses: &f" + loses + "&7, Ratio: &f" + String.format("%.1f", wlr));
+        lore.add("");
+        lore.add("&7Balance: &f$" + (int) balance);
         lore.add("&8-----------------------");
         lore.add("&6Click to view " + gang.getName() + "&r&6's members");
         lore.add("&eShift-Click to disband the gang");

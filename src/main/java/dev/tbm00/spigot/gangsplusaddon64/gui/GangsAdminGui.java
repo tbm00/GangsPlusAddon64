@@ -61,6 +61,7 @@ public class GangsAdminGui {
         else if (currentSortIndex==5) gangMap.sort(Comparator.comparingDouble(Gang::getWlRatio).reversed());
         else if (currentSortIndex==6) gangMap.sort(Comparator.comparingInt(Gang::getFightsWon).reversed());
         else if (currentSortIndex==7) gangMap.sort(Comparator.comparingInt(Gang::getFightsLost).reversed());
+        else if (currentSortIndex==8) gangMap.sort(Comparator.comparingDouble(Gang::getBankMoney).reversed());
     }
 
     /**
@@ -93,8 +94,10 @@ public class GangsAdminGui {
                 int kills = gang.getKills();
                 int deaths = gang.getDeaths();
                 double kdr = gang.getKdRatio();
+
+                double balance = gang.getBankMoney();
                 
-                GuiUtils.addGuiItemGangAdmin(gui, player, gang, head, headMeta, lore, name, level, memberCount, ownerName, createdAt, wins, loses, wlr, kills, deaths, kdr);
+                GuiUtils.addGuiItemGangAdmin(gui, player, gang, head, headMeta, lore, name, level, memberCount, ownerName, createdAt, wins, loses, wlr, kills, deaths, kdr, balance);
         }
     }
 
