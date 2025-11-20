@@ -163,7 +163,7 @@ public class ManageGui {
         String name = (givenGang.getFormattedName()!=null) ? givenGang.getFormattedName() : givenGang.getRawName();
         int level = givenGang.getLevel();
         int memberCount = givenGang.getAllMembersCount();
-        String ownerName = givenGang.getOwnerName();
+        String ownerName = GangUtils.getGangOwnerName(givenGang);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String createdAt = dateFormat.format(givenGang.getCreatedAt());
         

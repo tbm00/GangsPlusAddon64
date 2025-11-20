@@ -19,6 +19,10 @@ public class GangUtils {
         GangUtils.javaPlugin = javaPlugin;
     }
 
+    public static String getGangOwnerName(Gang gang) {
+        return gang.getOwnerMemberData().getName();
+    }
+
     /**
      * Handles the sub command for opening the gang gui with all gangs.
      * 

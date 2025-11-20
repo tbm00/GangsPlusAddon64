@@ -47,7 +47,7 @@ public class PermsGui {
         lore.add("&8-----------------------");
         lore.add("&7- Go to gang homes");
         lore.add("&7- Join & start gang /fights");
-        lore.add("&7- Use gang and ally chats");
+        lore.add("&7- Use /gangchat and /allychat");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fGang Rank: Thug"));
         clearMetaJunk(meta);
@@ -58,8 +58,7 @@ public class PermsGui {
 
         lore.add("&8-----------------------");
         lore.add("&7- Invite/uninvite gang members");
-        lore.add("&7- Deposit money in gang's bank");
-        lore.add("&7- Withdraw money from gang's bank");
+        lore.add("&7- Deposit/withdraw money to/from gang's bank");
         lore.add("&7+ all thug perms");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fGang Rank: Gangstar"));
@@ -71,6 +70,7 @@ public class PermsGui {
 
         lore.add("&8-----------------------");
         lore.add("&7- Kick gang members");
+        lore.add("&7- Promote/demote gang members");
         lore.add("&7- Set/delete gang homes");
         lore.add("&7- Toggle friendly-fire");
         lore.add("&7- Send ally requests to other gangs");
@@ -84,8 +84,8 @@ public class PermsGui {
         lore.clear();
 
         lore.add("&8-----------------------");
-        lore.add("&7- Promote/demote gang members");
-        lore.add("&7- Disband/rename the gang");
+        lore.add("&7- Rename the gang");
+        lore.add("&7- Disband the gang");
         lore.add("&7+ all thug, gangstar, & capo perms");
         meta.setLore(lore.stream().map(l -> ChatColor.translateAlternateColorCodes('&', l)).toList());
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&fGang Rank: Kingpin"));

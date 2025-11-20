@@ -6,7 +6,7 @@
 
     <groupId>dev.tbm00</groupId>
     <artifactId>GangsPlusAddon64</artifactId>
-    <version>0.0.6-beta</version>
+    <version>0.0.7-beta</version>
     <packaging>jar</packaging>
 
     <name>GangsPlusAddon64</name>
@@ -108,9 +108,9 @@
         <dependency>
             <groupId>net.brcdev.gangs</groupId>
             <artifactId>GangsPlus</artifactId>
-            <version>2.38.0-beta</version>
+            <version>2.41.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/depend/GangsPlus-2.38.0-beta.jar</systemPath>
+            <systemPath>${project.basedir}/depend/GangsPlus-2.41.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.slipcor.pvpstats</groupId>
@@ -141,7 +141,7 @@
         <dependency>
             <groupId>net.wesjd</groupId>
             <artifactId>anvilgui</artifactId>
-            <version>1.10.4-SNAPSHOT</version>
+            <version>1.10.10-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

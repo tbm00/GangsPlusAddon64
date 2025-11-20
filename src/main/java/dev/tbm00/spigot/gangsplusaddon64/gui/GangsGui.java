@@ -81,7 +81,7 @@ public class GangsGui {
                 String name = (gang.getFormattedName()!=null) ? gang.getFormattedName() : gang.getRawName();
                 int level = gang.getLevel();
                 int memberCount = gang.getAllMembersCount();
-                String ownerName = gang.getOwnerName();
+                String ownerName = GangUtils.getGangOwnerName(gang);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 String createdAt = dateFormat.format(gang.getCreatedAt());
                 
